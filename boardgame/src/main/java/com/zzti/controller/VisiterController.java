@@ -5,6 +5,7 @@ import com.zzti.pojo.Visiter;
 import com.zzti.serviceImpl.VisiterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -71,5 +72,9 @@ public class VisiterController {
             return SysResult.success();
         else
             return SysResult.fail();
+    }
+    @GetMapping("index")
+    public String index() {
+        return "index";
     }
 }
