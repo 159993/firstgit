@@ -8,7 +8,7 @@ spring:
     username: root
     password: a123456
   thymeleaf:
-    prefix: classpath:/templates/
+    prefix: classpath:/static/
 mybatis-plus:
   mapper-locations: classpath:/mybatis/mapper/*.xml
   type-aliases-package: com.zzti.pojo

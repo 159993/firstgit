@@ -11,9 +11,9 @@ import java.util.List;
 
 @Controller
 public class demo {
-    @GetMapping("/index")
+    @GetMapping("/" )
     public String index() {
-        return "redirect:index";
+        return "redirect:login.html";
     }
 //    @GetMapping("/test1")
     @ResponseBody

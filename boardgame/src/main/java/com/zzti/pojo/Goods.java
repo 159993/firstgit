@@ -1,18 +1,22 @@
 package com.zzti.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-@lombok.Data
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
 public class Goods {
+    @TableId(value = "id",type = IdType.AUTO)
     private Integer id;
     private String name;
-    private double sellPrice;
-    private double purPrice;
+    private Double sellPrice;
+    private Double purPrice;
     private Integer number;
     private String type;
+
 }

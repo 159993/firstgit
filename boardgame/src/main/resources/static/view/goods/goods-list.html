@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/common.css">
+
+    <link rel="stylesheet" href="../../layui/extend/dtree.css">
+    <link rel="stylesheet" href="../../layui/extend/font/dtreefont.css">
+
+    <!-- 图标 -->
+    <link rel="stylesheet" href="../../static/CaoMei/style.css">
+</head>
+<body>
+<div class="yadmin-body animated fadeIn">
+
+    <form class="layui-form yadmin-search-area input">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label for="roleName" class="layui-form-label">名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="roleName" autocomplete="off"
+                           id="roleName" class="layui-input">
+                </div>
+
+                <button lay-submit="" lay-filter="search" class="layui-btn layui-btn-sm layui-btn-primary table-action">
+                    <i class="layui-icon layui-icon-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <table class="layui-hide" id="role-table"></table>
+</div>
+
+<script type="text/html" id="toolbar">
+
+    <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="add">
+        <i class="layui-icon layui-icon-addition"></i>
+        新增
+    </button>
+
+</script>
+
+<script type="text/html" id="auth-toolbar">
+
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="grant-menu">授权菜单</a>
+
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="grant-operator">授权功能</a>
+
+</script>
+
+<script type="text/html" id="column-toolbar">
+
+    <button type="button" class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">
+        <i class="layui-icon layui-icon-edit" title="编辑"></i>
+        编辑
+    </button>
+
+    <button type="button" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">
+        <i class="layui-icon layui-icon-delete" title="删除"></i>
+        删除
+    </button>
+
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/common.js"></script>
+
+<script>
+    layui.config({
+        base: '/layui/extend/'
+    }).use(['table', 'element', 'dtree', 'form', 'tablePlug'], function () {
+        var table = layui.table;
+        var $ = layui.$;
+        var dtree = layui.dtree;
+        var form = layui.form;
+        var tablePlug = layui.tablePlug;
+
+        tablePlug.smartReload.enable(true);
+
+        form.on('submit(search)', function (form) {
+            table.reload('role-table', {
+                where: form.field
+            });
+            return false;
+        });
+
+        table.render({
+            elem: '#role-table',
+            url: '/goods/findAll',
+            cellMinWidth: 80,
+            page: true,
+            toolbar: '#toolbar',
+            smartReloadModel: true,
+            response:{
+                statusName: 'code', //数据状态的字段名称，默认：code
+                statusCode: 0, //成功的状态码，默认：0
+                countName: 'count', //数据总数的字段名称，默认：count
+                dataName: 'data' //数据列表的字段名称，默认：data
+            },
+            cols: [
+                [
+                    {type: 'numbers', title: '序号', width: 60},
+                    {field: 'id', title: 'ID', hide: true},
+                    {field: 'name', title: '名称', minWidth: 120},
+                    {field: 'sellPrice', title: '售价', minWidth: 120},
+                    {field: 'purPrice', title: '进价', minWidth: 120},
+                    {field: 'number', title: '现存数量', minWidth: 120},
+                    {field: 'type', title: '类别', minWidth: 120},
+                    {title: '操作', fixed: 'right', width: 200, align: 'center', toolbar: '#column-toolbar'}
+                ]
+            ],
+            // done: function (res,curr,count) {
+            //     $("[data-field='sex']").children().each(function(){
+            //         if($(this).text()=='0'){
+            //             $(this).text("男")
+            //         }else if($(this).text()=='1'){
+            //             $(this).text("女")
+            //         }else if($(this).text()=='-1')
+            //         {
+            //             $(this).text("保密")
+            //         }
+            //     })
+            // }
+        });
+
+
+        table.on('toolbar', function (obj) {
+            var event = obj.event;
+            if (event === 'add') {
+                add();
+            }
+        });
+
+        table.on('tool', function (obj) {
+            var data = obj.data;
+            var event = obj.event;
+
+            if (event === 'edit') {
+                edit(data.id);
+
+            } else if (event === 'del') {
+                layer.confirm("确定删除角色吗?", {icon: 3, title: '提示'},
+                    function (index) {// 确定回调
+                        deluser(data)
+                        layer.close(index);
+                    }, function (index) {//取消回调
+                        layer.close(index);
+                    }
+                );
+            }
+        });
+        function deluser(data){
+            $.ajax({
+                url: "/goods/delete/"+data.id,    //这个是后台的路由地址
+                type: "POST",
+                // data:{"id":data.id},//传给后台的值
+                dataType: "json",
+                success: function(data){
+                    if(data['status']==200){   //从前台取回的状态值
+                        layer.close(index);
+                        //同步更新表格和缓存对应的值
+                        obj.del();
+                        layer.msg("删除成功", {icon: 6});
+                    }else{
+                        layer.msg("删除失败", {icon: 5});
+                    }
+                }
+            });
+
+        }
+        function add() {
+            layer.open({
+                content: "/view/goods/goods-add.html",
+                title: "新增角色",
+                area: ['40%', '85%'],
+                type: 2,
+                maxmin: true,
+                shadeClose: true,
+                end: function () {
+                    table.reload('role-table');
+                }
+            });
+        }
+
+        function edit(id) {
+            layer.open({
+                content: '/goods/findById/'+id,
+                title: "编辑角色",
+                area: ['40%', '85%'],
+                type: 2,
+                maxmin: true,
+                shadeClose: true,
+                end: function () {
+                    table.reload('role-table');
+                }
+            });
+        }
+    });
+</script>
+<!--<script type="text/html" id="table-gender">-->
+<!--{{# if(d.gender=== '0') { }}  // 可以用 === 来表示等于-->
+<!--女-->
+<!--{{# } else if(d.gender== 1) { }} // 也可以用 == 来表示等于，效果相差不大-->
+<!--男-->
+<!--{{# } else { }}-->
+<!--保密-->
+<!--{{# } }}-->
+<!--</script>-->
+
+</body>
+</html>
