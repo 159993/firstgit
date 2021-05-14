@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzti.mapper.OrderGoodsMapper">
+    <!--留着以后用  -->
+
+
+    <select id="selectList" parameterType="java.util.Map" resultType="com.zzti.pojo.OrderGoods">
+
+
+        SELECT og.`id`, v.`name` visiter_name,g.`name` goods_name,og.`create_time` ,og.`number`,og.`price`,og.`total`
+        FROM  order_goods og,visiter v, goods g
+        WHERE og.`goods_id` = g.`id`
+        AND og.`visiter_id` = v.`id`
+
+
+        <if test="visiterName != null">
+            and v.`name` LIKE concat('%',#{visiterName},'%')
+        </if>
+        <if test="goodsName != null">
+            and g.`name` LIKE concat('%',#{goodsName},'%')
+        </if>
+        <if test="page != null and limit !=null ">
+            LIMIT #{page},#{limit}
+        </if>
+
+    </select>
+
+    <select id="updateState" resultType="java.lang.Integer">
+
+
+    </select>
+
+
+</mapper>

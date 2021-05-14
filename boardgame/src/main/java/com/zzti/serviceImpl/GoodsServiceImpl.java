@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class GoodsServiceImpl implements GoodsService {
 
@@ -21,8 +23,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<Goods> findAll() {
-        return goodsMapper.selectList(new QueryWrapper<>(null));
+    public List<Goods> findAll(Map map) {
+        return goodsMapper.selectList(map);
     }
 
     @Override

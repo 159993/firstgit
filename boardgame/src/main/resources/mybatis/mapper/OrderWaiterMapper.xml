@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzti.mapper.OrderWaiterMapper">
+    <!--留着以后用  -->
+
+
+
+    <select id="selectList" parameterType="java.util.HashMap" resultType="com.zzti.pojo.OrderWaiter">
+
+        SELECT ow.id,w.name waiter_name,v.name visiter_name,ow.create_time,ow.number,ow.price,ow.total
+        FROM  order_waiter ow,visiter v,waiter w
+        WHERE ow.waiter_id = w.`id`
+        AND ow.`visiter_id` = v.`id`
+
+        <if test="visiterName != null">
+            and v.`name` LIKE concat('%',#{visiterName},'%')
+        </if>
+        <if test="waiterName != null">
+            and w.`name` LIKE concat('%',#{waiterName},'%')
+        </if>
+        <if test="page != null and limit !=null ">
+            LIMIT #{page},#{limit}
+        </if>
+
+
+
+    </select>
+
+
+</mapper>

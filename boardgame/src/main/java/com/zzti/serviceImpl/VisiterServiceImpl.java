@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class VisiterServiceImpl implements VisiterService {
@@ -19,8 +20,8 @@ public class VisiterServiceImpl implements VisiterService {
         return visiterMapper.selectById(id);
     }
     @Override
-    public List<Visiter> findAll(){
-        return visiterMapper.selectList(new QueryWrapper<>(null));
+    public List<Visiter> findAll(Map map){
+        return visiterMapper.selectList(map);
     }
     @Override
     public Integer deleteByIds(Integer[] ids){

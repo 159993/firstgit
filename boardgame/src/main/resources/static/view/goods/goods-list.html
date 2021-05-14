@@ -16,23 +16,25 @@
 <body>
 <div class="yadmin-body animated fadeIn">
 
+
     <form class="layui-form yadmin-search-area input">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label for="roleName" class="layui-form-label">名称</label>
+                <label for="goodsName" class="layui-form-label">名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="roleName" autocomplete="off"
-                           id="roleName" class="layui-input">
+                    <input type="text" name="goodsName" autocomplete="off"
+                           id="goodsName" class="layui-input">
                 </div>
 
-                <button lay-submit="" lay-filter="search" class="layui-btn layui-btn-sm layui-btn-primary table-action">
+                <button type="button" lay-submit="" lay-filter="search"
+                        class="layui-btn">
                     <i class="layui-icon layui-icon-search"></i>
                 </button>
             </div>
         </div>
     </form>
 
-    <table class="layui-hide" id="role-table"></table>
+    <table class="layui-hide" id="goods-table"></table>
 </div>
 
 <script type="text/html" id="toolbar">
@@ -83,14 +85,14 @@
         tablePlug.smartReload.enable(true);
 
         form.on('submit(search)', function (form) {
-            table.reload('role-table', {
+            table.reload('goods-table', {
                 where: form.field
             });
             return false;
         });
 
         table.render({
-            elem: '#role-table',
+            elem: '#goods-table',
             url: '/goods/findAll',
             cellMinWidth: 80,
             page: true,
@@ -113,7 +115,7 @@
                     {field: 'type', title: '类别', minWidth: 120},
                     {title: '操作', fixed: 'right', width: 200, align: 'center', toolbar: '#column-toolbar'}
                 ]
-            ],
+            ],id:"goods-table",
             // done: function (res,curr,count) {
             //     $("[data-field='sex']").children().each(function(){
             //         if($(this).text()=='0'){
@@ -128,6 +130,27 @@
             // }
         });
 
+        //监听用户名搜索事件
+
+        var active = {
+            reload: function(){
+                var goodsName = $('#goodsName');	//得到搜索框里已输入的数据
+                //执行重载
+                table.reload('goods-table', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        goodsName:  goodsName.val(),
+                    }
+                });
+            }
+        };
+
+        $('.layui-inline .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
 
         table.on('toolbar', function (obj) {
             var event = obj.event;
@@ -182,7 +205,7 @@
                 maxmin: true,
                 shadeClose: true,
                 end: function () {
-                    table.reload('role-table');
+                    table.reload('goods-table');
                 }
             });
         }
@@ -195,22 +218,30 @@
                 type: 2,
                 maxmin: true,
                 shadeClose: true,
-                end: function () {
-                    table.reload('role-table');
+
+                end: function (data) {
+                    if(data['status']==200){   //从前台取回的状态值
+                        // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        // parent.layer.close(index); //再执行关闭
+                        //同步更新表格和缓存对应的值
+                        // var index = parent.layer.getFrameIndex(window.name);
+                        // setTimeout(function(){parent.layer.close(index)}, 1000);
+
+                        layer.msg("修改成功", {icon: 6});
+                        table.reload('goods-table');
+                    }
+                    // var index = parent.layer.getFrameIndex(window.name);
+                    // setTimeout(function(){parent.layer.close(index)}, 1000);
+
+                    table.reload('goods-table');
                 }
+                // var index = parent.layer.getFrameIndex(window.name);
+                // setTimeout(function(){parent.layer.close(index)}, 1000);
+
             });
-        }
+        }0
     });
 </script>
-<!--<script type="text/html" id="table-gender">-->
-<!--{{# if(d.gender=== '0') { }}  // 可以用 === 来表示等于-->
-<!--女-->
-<!--{{# } else if(d.gender== 1) { }} // 也可以用 == 来表示等于，效果相差不大-->
-<!--男-->
-<!--{{# } else { }}-->
-<!--保密-->
-<!--{{# } }}-->
-<!--</script>-->
 
 </body>
 </html>

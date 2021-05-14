@@ -9,9 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/goods")
@@ -40,10 +44,21 @@ public class GoodsController {
 
     @RequestMapping("/findAll")
     @ResponseBody
-    public String findAll(){
-        List<Goods> all = goodsServiceImpl.findAll();
+    public String findAll(Integer page, int limit, HttpServletRequest request,
+                          @RequestParam(name = "goodsName",required =  false ,defaultValue = "") String goodsName
+                          ){
+        Map<String, Object> ret = new HashMap<>();
+        Map<String, Object> queryMap = new HashMap<>();
+
+        queryMap.put("goodsName",goodsName);
+        List<Goods> aaa = goodsServiceImpl.findAll(queryMap);
+        queryMap.put("page",(page-1)*limit);
+        queryMap.put("limit",limit);
+        System.out.println(goodsName);
+
+        List<Goods> all = goodsServiceImpl.findAll(queryMap);
         String s = JSON.toJSONString(all);
-        return  "{\"count\":"+ all.size()+", \"code\":0 , \"data\":"+s+"}";
+        return  "{\"count\":"+ aaa.size()+", \"code\":0 , \"data\":"+s+"}";
     }
 
     //管理员或服务员删除商品信息，参数id数组，返回对象SysResult.status=200则表示成功

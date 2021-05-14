@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WaiterServiceImpl implements WaiterService {
@@ -27,10 +28,14 @@ public class WaiterServiceImpl implements WaiterService {
         return waiterMapper.queryByAcc(loginUsername,loginPassword);
     }
 
+    @Override
+    public Waiter queryManager(String loginUsername, String loginPassword) {
+        return waiterMapper.queryManager(loginUsername,loginPassword);
+    }
 
     @Override
-    public List<Waiter> findAll() {
-        return waiterMapper.selectList(new QueryWrapper<>(null));
+    public List<Waiter> findAll(Map map) {
+        return waiterMapper.selectList(map);
     }
 
     @Override

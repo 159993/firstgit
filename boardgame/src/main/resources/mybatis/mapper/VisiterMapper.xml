@@ -5,4 +5,17 @@
 <mapper namespace="com.zzti.mapper.VisiterMapper">
     <!--留着以后用  -->
 
+    <select id="selectList" parameterType="java.util.HashMap"
+            resultType="com.zzti.pojo.Visiter">
+
+        SELECT * FROM vister
+        <where>
+            <if test="visitName != null">
+                name LIKE concat('%',#{visitName},'%')
+            </if>
+        </where>
+
+
+    </select>
+
 </mapper>

@@ -48,29 +48,29 @@
             <!-- 头像区域 -->
             <ul class="layui-nav layui-layout-right">
 
-                <li class="layui-nav-item feature-items">
-                    <a lay-event="github" title="Github 地址">
-                        <i class="ri-github-fill"></i>
-                    </a>
-                </li>
+                <!--<li class="layui-nav-item feature-items">-->
+                    <!--<a lay-event="github" title="Github 地址">-->
+                        <!--<i class="ri-github-fill"></i>-->
+                    <!--</a>-->
+                <!--</li>-->
 
-                <li class="layui-nav-item feature-items">
-                    <a lay-event="website" title="前台">
-                        <i class="ri-earth-line"></i>
-                    </a>
-                </li>
+                <!--<li class="layui-nav-item feature-items">-->
+                    <!--<a lay-event="website" title="前台">-->
+                        <!--<i class="ri-earth-line"></i>-->
+                    <!--</a>-->
+                <!--</li>-->
 
                 <li class="layui-nav-item feature-items">
                     <a lay-event="clear" title="清理标签缓存"><i class="ri-brush-3-line"></i></a>
                 </li>
 
-                <li class="layui-nav-item feature-items">
-                    <a lay-event="tag" title="便签"><i class="ri-git-repository-line"></i></a>
-                </li>
+                <!--<li class="layui-nav-item feature-items">-->
+                    <!--<a lay-event="tag" title="便签"><i class="ri-git-repository-line"></i></a>-->
+                <!--</li>-->
 
-                <li class="layui-nav-item feature-items">
-                    <a lay-event="todo" title="待处理任务"><i class="ri-calendar-todo-line"></i></a>
-                </li>
+                <!--<li class="layui-nav-item feature-items">-->
+                    <!--<a lay-event="todo" title="待处理任务"><i class="ri-calendar-todo-line"></i></a>-->
+                <!--</li>-->
 
                 <li class="layui-nav-item feature-items">
                     <a id="screenFull" lay-event="screenFull" title="全屏">
@@ -118,19 +118,46 @@
                             <i class="ri-shield-keyhole-line"></i>&emsp;<cite>管理</cite>
                         </a>
                         <dl class="layui-nav-child">
-                            <!--<dd>-->
-                                <!--<a lay-id="view/user/user-list.html" lay-url="view/user/user-list.html">-->
-                                    <!--<cite>用户管理</cite>-->
-                                <!--</a>-->
-                            <!--</dd>-->
+                            <dd>
+                                <a lay-id="view/user/user-list.html" lay-url="view/user/user-list.html">
+                                    <cite>用户管理</cite>
+                                </a>
+                            </dd>
                             <dd>
                                 <a lay-id="view/goods/goods-list.html" lay-url="view/goods/goods-list.html">
                                     <cite>商品管理</cite>
                                 </a>
                             </dd>
+                            <!--<dd>-->
+                                <!--<a lay-id="view/role/role-list.html" lay-url="view/role/role-list.html">-->
+                                    <!--<cite>服务员管理</cite>-->
+                                <!--</a>-->
+                            <!--</dd>-->
+                            <!--<dd>-->
+                                <!--<a lay-id="view/menu/menu-list.html" lay-url="view/menu/menu-list.html">-->
+                                    <!--<cite>菜单权限</cite>-->
+                                <!--</a>-->
+                            <!--</dd>-->
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a lay-id="#" lay-url="#">
+                            <i class="ri-shield-keyhole-line"></i>&emsp;<cite>订单管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
                             <dd>
-                                <a lay-id="view/role/role-list.html" lay-url="view/role/role-list.html">
-                                    <cite>服务员管理</cite>
+                                <a lay-id="view/order/order-equ.html" lay-url="view/order/order-equ.html">
+                                    <cite>设备订单管理</cite>
+                                </a>
+                            </dd>
+                            <dd>
+                                <a lay-id="view/order/order-goods.html" lay-url="view/order/order-goods.html">
+                                    <cite>商品订单管理</cite>
+                                </a>
+                            </dd>
+                            <dd>
+                                <a lay-id="view/order/order-waiter.html" lay-url="view/order/order-waiter.html">
+                                    <cite>服务订单管理</cite>
                                 </a>
                             </dd>
                             <!--<dd>-->
@@ -174,28 +201,28 @@
                             <!--</dd>-->
                         <!--</dl>-->
                     <!--</li>-->
-                    <li class="layui-nav-item">
-                        <a lay-id="#" lay-url="#">
-                            <i class="ri-alert-line"></i>&emsp;<cite>异常页</cite>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a lay-id="view/abnormalPage/403.html" lay-url="view/abnormalPage/403.html">
-                                    <cite>403</cite>
-                                </a>
-                            </dd>
-                            <dd>
-                                <a lay-id="view/abnormalPage/404.html" lay-url="view/abnormalPage/404.html">
-                                    <cite>404</cite>
-                                </a>
-                            </dd>
-                            <dd>
-                                <a lay-id="view/abnormalPage/500.html" lay-url="view/abnormalPage/500.html">
-                                    <cite>500</cite>
-                                </a>
-                            </dd>
-                        </dl>
-                    </li>
+                    <!--<li class="layui-nav-item">-->
+                        <!--<a lay-id="#" lay-url="#">-->
+                            <!--<i class="ri-alert-line"></i>&emsp;<cite>异常页</cite>-->
+                        <!--</a>-->
+                        <!--<dl class="layui-nav-child">-->
+                            <!--<dd>-->
+                                <!--<a lay-id="view/abnormalPage/403.html" lay-url="view/abnormalPage/403.html">-->
+                                    <!--<cite>403</cite>-->
+                                <!--</a>-->
+                            <!--</dd>-->
+                            <!--<dd>-->
+                                <!--<a lay-id="view/abnormalPage/404.html" lay-url="view/abnormalPage/404.html">-->
+                                    <!--<cite>404</cite>-->
+                                <!--</a>-->
+                            <!--</dd>-->
+                            <!--<dd>-->
+                                <!--<a lay-id="view/abnormalPage/500.html" lay-url="view/abnormalPage/500.html">-->
+                                    <!--<cite>500</cite>-->
+                                <!--</a>-->
+                            <!--</dd>-->
+                        <!--</dl>-->
+                    <!--</li>-->
                     <!--<li class="layui-nav-item">-->
                         <!--<a lay-id="https://www.yijianku.com/" lay-url="https://www.yijianku.com/">-->
                             <!--<i class="ri-menu-line"></i>&emsp;<cite>一级菜单</cite>-->
@@ -213,21 +240,21 @@
                     <!--</li>-->
                 </ul>
 
-                <div id="message">
-                    <div class="notification-box" lay-event="notification">
-                        <span class="notification-count">
-                            <!-- 此处可写数字 -->
-                        </span>
-                        <div class="notification-bell">
-                            <span class="bell-top"></span>
-                            <span class="bell-middle"></span>
-                            <span class="bell-bottom"></span>
-                            <span class="bell-rad"></span>
-                        </div>
-                    </div>
-                    <h3>消息通知</h3>
-                    <p>春已至,花已开,一切美好都将到来!</p>
-                </div>
+                             <!--<div id="message">-->
+                <!--<div class="notification-box" lay-event="notification">-->
+                <!--<span class="notification-count">-->
+                <!--&lt;!&ndash; 此处可写数字 &ndash;&gt;-->
+                <!--</span>-->
+                <!--<div class="notification-bell">-->
+                <!--<span class="bell-top"></span>-->
+                <!--<span class="bell-middle"></span>-->
+                <!--<span class="bell-bottom"></span>-->
+                <!--<span class="bell-rad"></span>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<h3>消息通知</h3>-->
+                <!--<p>春已至,花已开,一切美好都将到来!</p>-->
+                <!--</div>-->
 
             </div>
         </div>
@@ -281,20 +308,20 @@
                         </div>
                     </div>
                 </li>
-                <li>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path
-                            d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM11 13.05a2.5 2.5 0 1 0 2 2.45V11h3V9h-5v4.05z" />
-                    </svg>
-                </li>
-                <li>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path
-                            d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM12 13a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm-4 5h8a4 4 0 1 0-8 0z" />
-                    </svg>
-                </li>
+                <!--<li>-->
+                    <!--<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">-->
+                        <!--<path fill="none" d="M0 0h24v24H0z" />-->
+                        <!--<path-->
+                            <!--d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM11 13.05a2.5 2.5 0 1 0 2 2.45V11h3V9h-5v4.05z" />-->
+                    <!--</svg>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">-->
+                        <!--<path fill="none" d="M0 0h24v24H0z" />-->
+                        <!--<path-->
+                            <!--d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM12 13a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm-4 5h8a4 4 0 1 0-8 0z" />-->
+                    <!--</svg>-->
+                <!--</li>-->
             </ul>
 
         </div>

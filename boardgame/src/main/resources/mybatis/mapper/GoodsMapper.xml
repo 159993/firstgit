@@ -5,4 +5,18 @@
 <mapper namespace="com.zzti.mapper.GoodsMapper">
     <!--留着以后用  -->
 
+    <select id="selectList" parameterType="java.util.HashMap" resultType="com.zzti.pojo.Goods">
+
+        SELECT * FROM goods
+        <where>
+            <if test="goodsName != null">
+                name LIKE concat('%',#{goodsName},'%')
+            </if>
+        </where>
+        <if test="page != null and limit !=null ">
+            LIMIT #{page},#{limit}
+        </if>
+
+    </select>
+
 </mapper>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.ico"/>
+    <link rel="stylesheet" href="../../layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/common.css">
+
+    <link rel="stylesheet" href="../../layui/extend/dtree.css">
+    <link rel="stylesheet" href="../../layui/extend/font/dtreefont.css">
+
+
+</head>
+
+<body>
+
+<div class="yadmin-body animated fadeIn">
+    <form class="layui-form yadmin-search-area input" action="/ordEqu/selectList">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label for="visiterName" class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="visiterName" autocomplete="off"
+                           id="visiterName" class="layui-input">
+                </div>
+
+                <label for="equName" class="layui-form-label">设备名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="equName" autocomplete="off"
+                           id="equName" class="layui-input">
+                </div>
+
+                <label for="damage" class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                    <select name="damage" id="damage">
+                        <option value="">请选择</option>
+                        <option value="1">正常</option>
+                        <option value="0">损坏</option>
+                    </select>
+                </div>
+
+                <button type="button" data-type="reload"
+                        class="layui-btn">
+                    <i class="layui-icon layui-icon-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <table class="layui-hide" id="orderEqu-table" lay-filter = "orderEqu-table"></table>
+</div>
+
+<script type="text/html" id="toolbar">
+
+    <!--<button type="submit" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="add">-->
+        <!--<i class="layui-icon layui-icon-addition"></i>-->
+        <!--新增-->
+    <!--</button>-->
+
+</script>
+
+<script type="text/html" id="column-toolbar">
+
+    <!--<button type="button" class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">-->
+        <!--<i class="layui-icon layui-icon-edit" title="完成"></i>-->
+        <!--完成-->
+    <!--</button>-->
+
+    <button type="button" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">
+        <i class="layui-icon layui-icon-delete" title="删除"></i>
+        删除
+    </button>
+
+
+</script>
+
+<script type="text/html" id="statusTpl">
+    <input id="state" type="checkbox" name="state" value="{{d.state}}"
+           lay-skin="switch" lay-text="完成|未完成"
+           lay-filter="state" {{ d.state == '1' ? 'checked' : '' }} >
+</script>
+I
+<script src="../../js/jquery.js"></script>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/common.js"></script>
+
+
+<script>
+    layui.config({
+        base: '/layui/extend/'
+    }).use(['laydate', 'element', 'form', 'table','layer','dtree', 'tablePlug'], function () {
+        var table = layui.table;
+        var laydate = layui.laydate;
+        var $ = layui.jquery;
+        var form = layui.form;
+        var dtree = layui.dtree;
+        var tablePlug = layui.tablePlug;
+
+
+
+
+        // tablePlug.smartReload.enable(true);
+
+        // dtree.renderSelect({
+        //     elem: "#deptTree",
+        //     url: "/data/dept/tree.json",
+        //     dataStyle: "layuiStyle",
+        //     width: "100%",
+        //     method: "GET",
+        //     dot: false,
+        //     menubar: true,
+        //     response: {
+        //         statusCode: 0,
+        //         message: "msg",
+        //         Id: "id",
+        //         // id: "id",
+        //         title: "name"
+        //     }
+        // });
+        //
+        // dtree.on("node('deptTree')" ,function(obj) {
+        //     var typeDom = layui.$('#deptId');
+        //     console.log(typeDom.val() , obj.param.nodeId);
+        //     console.log(typeDom.val() === obj.param.nodeId);
+        //     if (typeDom.val() === obj.param.nodeId) {
+        //         typeDom.val('');
+        //         layui.$("input[dtree-id='deptTree']").val('请选择');
+        //     } else {
+        //         typeDom.val(obj.param.nodeId)
+        //     }
+        // });
+
+        table.render({
+            elem: '#orderEqu-table',
+            url: '/ordEqu/selectList',
+            page: true,
+            toolbar: '#toolbar',
+            smartReloadModel: true,
+            cols: [
+                [
+                    {type:'checkbox'},
+                    {type: 'numbers', title: '序号', width: 60},
+                    {field: 'Id', title: 'ID', hide: true},
+                    {field: 'visiterName', title: '用户名', minWidth: 160},
+                    {field: 'equName', title: '设备名称', minWidth: 160},
+                    {field: 'createTime', title: '创建时间', align: 'center', width: 180},
+                    {field: 'endTime', title: '结束时间',align: 'center', width: 180},
+                    {field: 'state', title: '状态', align: 'center', templet: "#statusTpl", width: 100},
+                    {field: 'damage', title: '设备状态', align: 'center', width: 100},
+                    {title: '操作', fixed: 'right', align: 'center', toolbar: '#column-toolbar'}
+                ]
+            ],
+            id:"orderEqu-table",
+            done: function (res,curr,count) {
+                $("[data-field='damage']").children().each(function(){
+                    if($(this).text()=='0'){
+                        $(this).text("设备损坏")
+                    }else if($(this).text()=='1'){
+                        $(this).text("设备正常")
+                    }
+                })
+                // var obj = res.data[state];
+                // console.log(obj);
+                // //todo 加上时间转化
+                // table.on('tool(state)',function (obj) {
+                //
+                // })
+                // if(obj.event=="updataDamage"){
+                //     console.log(data.state);
+                // }
+            },
+
+            limit:5,
+            page:{
+                layout:['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                ,limits:[5,10,15]
+                ,first:false
+                ,last:false
+            },
+            skin:'line'
+        });
+
+        //监听用户名搜索事件
+
+        var active = {
+            reload: function(){
+                var visiterName = $('#visiterName');	//得到搜索框里已输入的数据
+                var equName = $('#equName');	//得到搜索框里已输入的数据
+                var damage = $('#damage');	//得到搜索框里已输入的数据
+                //执行重载
+                table.reload('orderEqu-table', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        visiterName:  visiterName.val(),
+                        equName:equName.val(),//在表格中进行搜索
+                        damage:damage.val()//在表格中进行搜索
+                    }
+                });
+            }
+        };
+
+        $('.layui-inline .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //
+        // form.on('summit(search)', function (form) {
+        //     table.reload('orderEqu-table', {
+        //         where: form.visitName
+        //     });
+        //     return false;
+        // });
+
+
+
+
+//todo ajax 请求完成订单啥的
+        // 账号状态(完成/未完成)点击事件
+        // form.on('switch(state)', function(data){
+        //     var state = $('#orderEqu-table[name="state"]');
+        //     console.log("aaa"+data.state);
+        //     var chek= data.state;
+        //     var di = data.field;
+        //     if (data.elem.checked) {
+        //         // data.elem.state = 1;
+        //         $.ajax({
+        //             url:"/ordEqu/upDamage/di+","+chek,
+        //             dataType:"json",
+        //             success: function(data,status){
+        //                 if (status == 200){
+        //                     table.reload();
+        //                     parent.layer.msg("已完成", {icon: 6});
+        //                     }else{parent.layer.msg("错误", {icon: 6});}
+        //              }
+        //
+        //         });
+        //
+        //     } else {
+        //         parent.layer.msg("未完成", {icon: 6});
+        //     }
+        // });
+
+        //
+        // // 工具条点击事件
+        // table.on('toolbar', function (obj) {
+        //     var data = obj.data;
+        //     var event = obj.event;
+        //
+        //     if (event === 'add') {
+        //         layer.open({
+        //             content: "/view/user/user-add.html",
+        //             title: "新增用户",
+        //             area: ['40%', '85%'],
+        //             type: 2,
+        //             maxmin: true,
+        //             shadeClose: true
+        //         });
+        //     }
+        // });
+
+        // 行点击事件
+        table.on('tool', function (obj) {
+            var data = obj.data;
+            var event = obj.event;
+            if (event === 'edit') {
+                edit(data);
+            } else if (event === 'del') {
+                $.ajax({
+                    url: "/ordEqu/delete/"+data.id,    //这个是后台的路由地址
+                    type: "POST",
+                    // data:{"id":data.id},//传给后台的值
+                    dataType: "json",
+                    success: function(data){
+                        if(data['status']==200){   //从前台取回的状态值
+                            layer.close(index);
+                            //同步更新表格和缓存对应的值
+                            obj.del();
+                            layer.msg("删除成功", {icon: 6});
+                        }else{
+                            layer.msg("删除失败", {icon: 5});
+                        }
+                    }
+                });
+            }else if(event==='updataDamage'){
+                console.log(data.state);
+            }
+        });
+
+        table.on('row(orderEqu-table)',function(obj){
+            var data = obj.data;
+            var event = obj.event;
+            // console.log(this.checked?'1':'0');
+            // console.log(data.state);
+            this.checked=this.checked?false:true;
+            data.state = this.checked;
+            // console.log(this.checked?'1':'0');
+            // console.log(data.state);
+            console.log(data.id);
+            if(data.state == true)
+                data.state = 0;
+            else data.state = 1;
+            if ( data.state == 1) {
+                $.ajax({
+                    url: "/ordEqu/upDamage/"+data.id+","+data.state,
+                    dataType: "json",
+                    success: function (res) {
+                        console.log(res);
+                        if (res['status'] == 200) {
+                            table.reload();
+                            parent.layer.msg("已完成", {icon: 6});
+                        } else {
+                            parent.layer.msg("错误", {icon: 6});
+                        }
+                    }
+                })
+            }else {parent.layer.msg("未完成", {icon: 6});}
+
+        });
+
+        // function edit(data) {
+        //   var sta ;
+        //   if (this.checked){
+        //       sta = 1;
+        //   } else sta = 0;
+        //
+        //     layer.open({
+        //         content: '/ordEqu/upDamage/' + "id="+ data.id+'&state='+sta,
+        //         title: "完成",
+        //         area: ['40%', '85%'],
+        //         type: 2,
+        //         maxmin: true,
+        //         shadeClose: true,
+        //         end: function () {
+        //             table.reload('orderEqu-table');
+        //         }
+        //     });
+        // };
+        //
+    });
+</script>
+</body>
+</html>

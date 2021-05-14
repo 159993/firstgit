@@ -38,6 +38,20 @@ public class LoginController {
             return "login.html";
         }
     }
+    @RequestMapping("/loginManager")
+    public String loginManager(@RequestParam("username") String username,
+                        @RequestParam("password") String password,
+                        Model model, HttpSession session){
+
+        Waiter waiter = waiterServiceImpl.queryManager(username, password);
+        if (waiter!=null){
+            session.setAttribute("loginUser", username);
+            return "redirect:/indexMana.html";
+        } else {
+            model.addAttribute("msg", "用户名或者密码错误");
+            return "managerLogin.html";
+        }
+    }
     @RequestMapping("/login1")
     @ResponseBody
     public String login1(@RequestParam("params") String params){
@@ -51,6 +65,8 @@ public class LoginController {
 //        }
         String loginUsername = jsonObject.getString("loginUsername");
         String loginPassword = jsonObject.getString("loginPassword");
+        System.out.println(loginPassword);
+        System.out.println(loginUsername);
         Waiter waiter = waiterServiceImpl.queryByAcc(loginUsername, loginPassword);
         if (waiter!=null){
             resultMap.put("code",200);

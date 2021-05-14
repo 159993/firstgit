@@ -5,5 +5,59 @@
 <mapper namespace="com.zzti.mapper.OrderEquMapper">
     <!--留着以后用  -->
 
+    <resultMap id="contOneMonthEqu" type="java.util.HashMap">
+        <result column="name" property="key" javaType="java.lang.String"/>
+        <result column="COUNT" property="value" javaType="java.lang.Integer"/>
+    </resultMap>
+
+    <select id="selectByTime" resultType="OrderEqu">
+    SELECT * FROM order_equ WHERE TO_DAYS(order_equ.create_time)=TO_DAYS(NOW())
+    </select>
+    <select id="selectAll" resultType="OrderEqu">
+    SELECT oe.`id`, v.`name` visiter_name,e.`name` equ_name,oe.`create_time` ,oe.`end_time`, oe.`damage`
+    FROM order_equ oe,visiter v, equipment e
+    WHERE oe.`equ_id` = e.`id`
+    AND oe.`visiter_id` = v.`id`
+    </select>
+
+    <select id="selectList" parameterType="java.util.HashMap" resultType="com.zzti.pojo.OrderEqu">
+
+        SELECT oe.`id`, v.`name` visiter_name,e.`name` equ_name,oe.`create_time` ,oe.`end_time`, oe.`damage`,oe.`state`
+        FROM order_equ oe,visiter v, equipment e
+        WHERE oe.`equ_id` = e.`id`
+        AND oe.`visiter_id` = v.`id`
+        <if test="visiterName != null">
+            and v.`name` LIKE concat('%',#{visiterName},'%')
+        </if>
+        <if test="equName != null">
+            and e.`name` LIKE concat('%',#{equName},'%')
+        </if>
+        <if test="damage != null">
+            and oe.`damage` = #{damage}
+        </if>
+        <if test="page != null and limit !=null ">
+            LIMIT #{page},#{limit}
+        </if>
+
+
+
+
+    </select>
+    <update id="updateState">
+
+    UPDATE order_equ SET state = 1 ,end_time = NOW()
+    WHERE `id` = #{id};
+
+    </update>
+
+    <select id="contOneMonthEqu"  resultMap="contOneMonthEqu">
+        SELECT e.name,COUNT(*) AS COUNT
+        FROM order_equ oe ,equipment e
+        WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= DATE(oe.create_time)
+        AND  oe.equ_id = e.id
+        GROUP BY oe.equ_id
+        ORDER BY COUNT(oe.equ_id) DESC
+        LIMIT 0,5
+    </select>
 
 </mapper>

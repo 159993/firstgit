@@ -12,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,32 +31,19 @@ public class WaiterContraller {
 
     @RequestMapping("/findAll")
     @ResponseBody
-    public String findAll(){
-        List<Waiter> all = waiterServiceImpl.findAll();
+    public String findAll(Integer page, int limit, HttpServletRequest request,
+                          @RequestParam(name = "roleName",required =  false ,defaultValue = "") String roleName){
+        Map<String, Object> queryMap = new HashMap<>();
 
+        queryMap.put("roleName",roleName);
+        List<Waiter> aaa = waiterServiceImpl.findAll(queryMap);
+        queryMap.put("page",(page-1)*limit);
+        queryMap.put("limit",limit);
+        List<Waiter> all = waiterServiceImpl.findAll(queryMap);
         String s = JSON.toJSONString(all);
 
-        return "{\"count\":"+ all.size()+", \"code\":0 , \"data\":"+s+"}";
+        return "{\"count\":"+ aaa.size()+", \"code\":0 , \"data\":"+s+"}";
     }
-//    @RequestMapping("/aaa")
-//    @ResponseBody
-//    public String aaa(){
-//
-//
-//        Map<Object, Object> mp = new HashMap<>();
-//        mp.put("userId",1);
-//        mp.put("username",1);
-//        mp.put("email",1);
-//        mp.put("status",1);
-//        mp.put("lastLoginTime",1);
-//        mp.put("createTime",1);
-//        mp.put("deptId",1);
-//        mp.put("deptName",1);
-//
-//        String s = JSON.toJSONString(mp);
-//
-//        return "{\"count\":"+ 1+", \"code\":0 , \"data\":"+s+"}";
-//    }
 
     @RequestMapping("/insert")
     @ResponseBody

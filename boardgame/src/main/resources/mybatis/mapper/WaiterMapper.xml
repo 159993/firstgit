@@ -12,6 +12,25 @@
       WHERE  account = #{loginUsername}
       AND PASSWORD = #{loginPassword}
     </select>
+    <select id="queryManager" resultType="com.zzti.pojo.Waiter">
+      SELECT *
+      FROM manager
+      WHERE  account = #{loginUsername}
+      AND PASSWORD = #{loginPassword}
+    </select>
+    <select id="selectList" parameterType="java.util.HashMap" resultType="com.zzti.pojo.Waiter">
+
+        SELECT * FROM waiter
+        <where>
+            <if test="roleName != null">
+                name LIKE concat('%',#{roleName},'%')
+            </if>
+        </where>
+        <if test="page != null and limit !=null ">
+            LIMIT #{page},#{limit}
+        </if>
+
+    </select>
 
 
 </mapper>
