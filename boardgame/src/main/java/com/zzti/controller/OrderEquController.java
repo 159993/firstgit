@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zzti.pojo.Goods;
 import com.zzti.pojo.OrderEqu;
+import com.zzti.pojo.SysResult;
 import com.zzti.serviceImpl.OrderEquServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -145,18 +146,30 @@ public class OrderEquController {
 
     @RequestMapping("/upDamage/{id},{state}")
     @ResponseBody
-    public String upDamage(@PathVariable("id") String id,@PathVariable("state") String state){
+    public SysResult upDamage(@PathVariable("id") String id,@PathVariable("state") String state){
 
         Map<String, Object> res = new HashMap();
         if(state.equals("1")) {
             Integer orde = orderEquService.updateState(id);
             System.out.println(orde);
             if (orde == 1)
-                return "{status:200}";
-            return "{status: -1}";
-        }else
-            return  "{status: -1}";
+                return SysResult.success();
+            return SysResult.fail();
+        }else {
+            return SysResult.fail();
+        }
     }
+    @RequestMapping("/delete/{id}")
+    @ResponseBody
+    public SysResult delete(@PathVariable("id") Integer[] id){
+
+            Integer orde = orderEquService.deleteByIds(id);
+            System.out.println(orde);
+            if (orde == 1)
+                return SysResult.success();
+            return SysResult.fail();
+        }
+
 
 
 }

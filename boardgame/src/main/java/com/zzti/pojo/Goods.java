@@ -16,6 +16,7 @@ public class Goods {
     private String name;
     private Double sellPrice;
     private Double purPrice;
+    private Integer totalPurchase;
     private Integer number;
     private String type;
 

@@ -11,59 +11,49 @@
 
 <form action="" method="post" class="layui-form layui-form-pane">
 
-            <input type="text" id="Id" name="Id" th:value="${good.getId()}" hidden = "hidden" >
+    <input type="text" id="Id" name="Id" th:value="${equipment.getId()}" hidden = "hidden" >
 
 
     <div class="layui-form-item">
         <label for="name" class="layui-form-label">
-            商品名称
+            设备名称
         </label>
         <div class="layui-input-block">
             <input type="text" id="name" name="name"
                    lay-verify="required" lay-vertype="tips"
-                   autocomplete="off" class="layui-input" th:value="${good.getName}" >
+                   autocomplete="off" class="layui-input" th:value="${equipment.getName()}" >
         </div>
     </div>
     <div class="layui-form-item">
-        <label for="sellPrice" class="layui-form-label">
-            售价
+        <label for="price" class="layui-form-label">
+            价格
         </label>
         <div class="layui-input-block">
-            <input type="text" id="sellPrice" name="sellPrice"
+            <input type="text" id="price" name="price"
                    lay-verify="required" lay-vertype="tips"
-                   autocomplete="off" class="layui-input"  th:value="${good.getSellPrice()}">
+                   autocomplete="off" class="layui-input"  th:value="${equipment.getPrice()}">
         </div>
     </div>
     <div class="layui-form-item">
-        <label for="purPrice" class="layui-form-label">
-            进价
+        <label for="damaged" class="layui-form-label">
+            是否损坏
         </label>
-        <div class="layui-input-block">
-            <input type="text" id="purPrice" name="purPrice"
-                   lay-verify="required" lay-vertype="tips"
-                   autocomplete="off" class="layui-input" th:value="${good.getPurPrice()}">
+        <div class="layui-input-block" id = "damaged">
+            <input type="radio" name="damaged" th:value="1" title="好的" th:checked="${equipment.getDamage()==1}">
+            <input type="radio" name="damaged" th:value="0" title="坏的" th:checked="${equipment.getDamage()==0}">
         </div>
     </div>
     <div class="layui-form-item">
-        <label for="number" class="layui-form-label">
-            现存数量
+        <label for="comment" class="layui-form-label">
+            详情
         </label>
         <div class="layui-input-block">
-            <input type="text" id="number" name="number"
+            <input type="text" id="comment" name="comment"
                    lay-verify="required" lay-vertype="tips"
-                   autocomplete="off" class="layui-input" th:value="${good.getNumber()}">
+                   autocomplete="off" class="layui-input" th:value="${equipment.getComment()}">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label for="totalPurchase" class="layui-form-label">
-            新增数量
-        </label>
-        <div class="layui-input-block">
-            <input type="text" id="totalPurchase" name="totalPurchase"
-                   lay-verify="required" lay-vertype="tips"
-                   autocomplete="off" class="layui-input">
-        </div>
-    </div>
+
 
     <div class="layui-form-item">
         <label for="type" class="layui-form-label">
@@ -72,20 +62,31 @@
         <div class="layui-input-block">
             <input type="text" id="type" name="type"
                    lay-verify="required" lay-vertype="tips"
-                   autocomplete="off" class="layui-input" th:value="${good.getType()}">
+                   autocomplete="off" class="layui-input" th:value="${equipment.getType()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="used" class="layui-form-label">
+            是否有人使用
+        </label>
+        <div class="layui-input-block" id="used" >
+            <input type="radio" name="used" th:value="1" title="正在使用" th:checked="${equipment.getUsed()==1}">
+            <input type="radio" name="used" th:value="0" title="无人使用" th:checked="${equipment.getUsed()==0}">
+            <!--<input type="text" th:value="${equipment.getUsed()}">-->
         </div>
     </div>
 
     <div class="layui-form-item">
         <div class="layui-input-block" style="margin-left:0;text-align:center;">
 
-            <button class="layui-btn layui-btn-normal" type="button" onclick="toAjax()">修改</button>
+            <button class="layui-btn layui-btn-normal"  type="button" onclick="toAjax()">修改</button>
         </div>
     </div>
 </form>
 <script src="../../layui/layui.js"></script>
 <script src="../../js/common.js"></script>
 <script>
+
     layui.config({
         base: '/layui/extend/'
     }).extend({
@@ -97,11 +98,25 @@
 
     });
     function toAjax() {
+        var a = document.getElementsByName("used");
+        var used = 0;
+        for(var   i=0;   i<a.length;   i++)    {
+            if(a[i].checked){
+                used = a[i].value
+            }
+        }
+        var dama = document.getElementsByName("damaged");
+        var damaged = 0;
+        for(var   i=0;   i<dama.length;   i++)    {
+            if(dama[i].checked){
+                damaged = dama[i].value
+            }
+        }
         $.ajax({
             type: "post",
-            url: "/goods/update/",
-            data: {id:$("#Id").val(),name:$("#name").val(),sellPrice:$("#sellPrice").val()
-                ,purPrice:$("#purPrice").val(),number:$("#number").val(),totalPurchase:$("#totalPurchase").val()
+            url: "/equipment/update/",
+            data: {id:$("#Id").val(),name:$("#name").val(),price:$("#price").val()
+                ,damage:damaged,comment:$("#comment").val(),used:used
                 ,type:$("#type").val()},
             dataType: "json",
             success: function (data) {

@@ -11,4 +11,5 @@ import java.util.Map;
 public interface GoodsMapper extends BaseMapper<Goods> {
 
     List<Goods> selectList(Map map);
+    Integer update(Goods goods);
 }

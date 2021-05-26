@@ -20,34 +20,34 @@
         <form class="layui-form yadmin-search-area input">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label for="username" class="layui-form-label">用户名</label>
+                    <label for="visiterName" class="layui-form-label">用户名</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="username" autocomplete="off"
-                               id="username" class="layui-input">
+                        <input type="text" name="visiterName" autocomplete="off"
+                               id="visiterName" class="layui-input">
                     </div>
 
-                    <label for="email" class="layui-form-label">邮箱</label>
+                    <label for="account" class="layui-form-label">邮箱</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="email" autocomplete="off"
-                               id="email" class="layui-input">
+                        <input type="text" name="account" autocomplete="off"
+                               id="account" class="layui-input">
                     </div>
 
-                    <label for="deptTree" class="layui-form-label">部门</label>
-                    <div class="layui-input-inline">
-                        <ul id="deptTree" class="dtree" data-id="0" data-value="请选择"></ul>
-                        <input type="hidden" id="deptId" name="deptId">
-                    </div>
+                    <!--<label for="deptTree" class="layui-form-label">部门</label>-->
+                    <!--<div class="layui-input-inline">-->
+                        <!--<ul id="deptTree" class="dtree" data-id="0" data-value="请选择"></ul>-->
+                        <!--<input type="hidden" id="deptId" name="deptId">-->
+                    <!--</div>-->
 
-                    <label for="status" class="layui-form-label">状态</label>
-                    <div class="layui-input-inline">
-                        <select name="status" id="status">
-                            <option value="">请选择</option>
-                            <option value="1">正常</option>
-                            <option value="0">锁定</option>
-                        </select>
-                    </div>
+                    <!--<label for="status" class="layui-form-label">状态</label>-->
+                    <!--<div class="layui-input-inline">-->
+                        <!--<select name="status" id="status">-->
+                            <!--<option value="">请选择</option>-->
+                            <!--<option value="1">正常</option>-->
+                            <!--<option value="0">锁定</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
 
-                    <button lay-submit="" lay-filter="search" class="layui-btn layui-btn-sm layui-btn-primary table-action">
+                    <button lay-submit="" lay-filter="search" class="layui-btn">
                         <i class="layui-icon layui-icon-search"></i>
                     </button>
                 </div>
@@ -101,38 +101,38 @@
 
             tablePlug.smartReload.enable(true);
 
-            dtree.renderSelect({
-                elem: "#deptTree",
-                url: "/data/dept/tree.json",
-                dataStyle: "layuiStyle",
-                width: "100%",
-                method: "GET",
-                dot: false,
-                menubar: true,
-                response: {
-                    statusCode: 0,
-                    message: "msg",
-                    treeId: "id",
-                    parentId: "parentId",
-                    title: "name"
-                }
-            });
-
-            dtree.on("node('deptTree')" ,function(obj) {
-                var typeDom = layui.$('#deptId');
-                console.log(typeDom.val() , obj.param.nodeId);
-                console.log(typeDom.val() === obj.param.nodeId);
-                if (typeDom.val() === obj.param.nodeId) {
-                    typeDom.val('');
-                    layui.$("input[dtree-id='deptTree']").val('请选择');
-                } else {
-                    typeDom.val(obj.param.nodeId)
-                }
-            });
+            // dtree.renderSelect({
+            //     elem: "#deptTree",
+            //     url: "/data/dept/tree.json",
+            //     dataStyle: "layuiStyle",
+            //     width: "100%",
+            //     method: "GET",
+            //     dot: false,
+            //     menubar: true,
+            //     response: {
+            //         statusCode: 0,
+            //         message: "msg",
+            //         treeId: "id",
+            //         parentId: "parentId",
+            //         title: "name"
+            //     }
+            // });
+            //
+            // dtree.on("node('deptTree')" ,function(obj) {
+            //     var typeDom = layui.$('#deptId');
+            //     console.log(typeDom.val() , obj.param.nodeId);
+            //     console.log(typeDom.val() === obj.param.nodeId);
+            //     if (typeDom.val() === obj.param.nodeId) {
+            //         typeDom.val('');
+            //         layui.$("input[dtree-id='deptTree']").val('请选择');
+            //     } else {
+            //         typeDom.val(obj.param.nodeId)
+            //     }
+            // });
 
             table.render({
                 elem: '#user-table',
-                url: '/data/user/list.json',
+                url: '/visiter/findAll',
                 page: true,
                 toolbar: '#toolbar',
                 smartReloadModel: true,
@@ -140,27 +140,60 @@
                     [
                         {type:'checkbox'},
                         {type: 'numbers', title: '序号', width: 60},
-                        {field: 'userId', title: 'ID', hide: true},
-                        {field: 'username', title: '用户名', minWidth: 160},
-                        {field: 'deptName', title: '部门', minWidth: 160},
-                        {field: 'email', title: '邮箱', minWidth: 160},
-                        {field: 'createTime', title: '创建时间', align: 'center', width: 180},
-                        {field: 'lastLoginTime', title: '最后登陆时间',align: 'center', width: 180},
-                        {field: 'status', title: '状态', align: 'center', templet: "#statusTpl", width: 100},
+                        {field: 'id', title: 'ID', hide: true},
+                        {field: 'name', title: '用户名', minWidth: 100},
+                        {field: 'account', title: '账号', minWidth: 100},
+                        {field: 'comment', title: '描述', minWidth: 120},
+                        {field: 'age', title: '年龄', align: 'center', width: 120},
+                        {field: 'sex', title: '性别',align: 'center', width: 120},
+                        {field: 'createTime', title: '创建时间', align: 'center', width: 160},
+                        {field: 'updateTime', title: '更新时间', align: 'center', width: 160},
                         {title: '操作', fixed: 'right', align: 'center', toolbar: '#column-toolbar'}
                     ]
-                ]
-            });
-
-            // 账号状态(正常/锁定)点击事件
-            form.on('switch(status)', function(data){
-                if (data.elem.checked) {
-                    parent.layer.msg("激活成功", {icon: 6});
-                } else {
-                    parent.layer.msg("禁用成功", {icon: 6});
-
+                ],id:'user-table',
+                done: function (res,curr,count) {
+                    $("[data-field='sex']").children().each(function(){
+                        if($(this).text()=='0'){
+                            $(this).text("男")
+                        }else if($(this).text()=='1'){
+                            $(this).text("女")
+                        }else  if($(this).text()=='-1'){
+                            $(this).text("保密")
+                        }
+                    })
                 }
             });
+
+            var active = {
+                reload: function () {
+                    var visiterName = $('#visiterName');
+                    var account = $('#account');
+                    table.reload('user-table',{
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            },
+                            where: {
+                                visiterName:  visiterName.val()	,
+                                account: account.val()//在表格中进行搜索
+                            }
+                        }
+                    )
+                }
+            };
+            $('.layui-inline .layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+            // // 账号状态(正常/锁定)点击事件
+            // form.on('switch(status)', function(data){
+            //     if (data.elem.checked) {
+            //         parent.layer.msg("激活成功", {icon: 6});
+            //     } else {
+            //         parent.layer.msg("禁用成功", {icon: 6});
+            //
+            //     }
+            // });
 
             // 工具条点击事件
             table.on('toolbar', function (obj) {
@@ -174,25 +207,43 @@
                         area: ['40%', '85%'],
                         type: 2,
                         maxmin: true,
-                        shadeClose: true
+                        shadeClose: true,
+                        end: function () {
+                            table.reload('role-table');
+                        }
                     });
                 }
             });
 
-            // 行点击事件 重置密码
+            // 行点击事件
             table.on('tool', function (obj) {
                 var data = obj.data;
                 var event = obj.event;
                 if (event === 'edit') {
-                    edit(data.userId);
+                    edit(data.id);
                 } else if (event === 'del') {
                     layer.confirm("确定删除用户吗?", {icon: 3, title: '提示'},
                         function (index) {
-                            obj.del();
-                            layer.close(index);
-                            parent.layer.msg("删除成功", {icon: 6});
-                        }, function (index) {
-                            layer.close(index);
+                            $.ajax({
+                                url: "/visiter/delete/"+data.id,    //这个是后台的路由地址
+                                type: "POST",
+                                // data:{"id":data.id},//传给后台的值
+                                dataType: "json",
+                                success: function(data){
+                                    if(data['status']==200){   //从前台取回的状态值
+                                        layer.close(index);
+                                        //同步更新表格和缓存对应的值
+                                        obj.del();
+                                        layer.msg("删除成功", {icon: 6});
+                                        table.reload('user-table');
+
+                                    }else{
+                                        layer.msg("删除失败", {icon: 5});
+                                        table.reload('user-table');
+
+                                    }
+                                }
+                            });
                         }
                     );
                 }
@@ -201,7 +252,7 @@
 
             function edit(id) {
                 layer.open({
-                    content: '/user/' + id,
+                    content: '/visiter/findOne/' + id,
                     title: "编辑",
                     area: ['40%', '85%'],
                     type: 2,
@@ -212,14 +263,12 @@
                     }
                 });
             }
-
             form.on('submit(search)', function (form) {
                 table.reload('user-table', {
                     where: form.field
                 });
                 return false;
             });
-
         });
     </script>
 </body>

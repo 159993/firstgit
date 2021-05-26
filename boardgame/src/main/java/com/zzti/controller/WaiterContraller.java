@@ -60,16 +60,16 @@ public class WaiterContraller {
     }
     @RequestMapping("/update")
     @ResponseBody
-    public String update(Waiter waiter){
+    public SysResult update(Waiter waiter){
 
         Waiter wait = new Waiter(waiter.getId(),waiter.getAccount(), waiter.getName(), waiter.getAge(), waiter.getSex(), null, null, null, waiter.getAddress(),
                 waiter.getPhone(), waiter.getSalary(), null, waiter.getPassword());
 
         Integer up = waiterServiceImpl.update(wait);
        if(up>0)
-            return "1";
-        else
-           return "0";
+           return SysResult.success();
+       else
+           return SysResult.fail();
     }
 
     @RequestMapping("/queryById/{id}")

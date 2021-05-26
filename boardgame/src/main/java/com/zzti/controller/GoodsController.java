@@ -77,7 +77,7 @@ public class GoodsController {
 
     public SysResult add(Goods goods){
         Goods goods1= new Goods(null,goods.getName(),goods.getSellPrice()
-                ,goods.getPurPrice(),goods.getNumber(),goods.getType());
+                ,goods.getPurPrice(),goods.getNumber(),goods.getNumber(),goods.getType());
         System.out.println(goods1.toString());
          if(goodsServiceImpl.add(goods1)>0)
              return SysResult.success();
@@ -90,7 +90,7 @@ public class GoodsController {
     @ResponseBody
     public SysResult update(Goods goods){
         Goods goods1= new Goods(goods.getId(),goods.getName(),goods.getSellPrice(),
-                goods.getPurPrice(), goods.getNumber(),goods.getType());
+                goods.getPurPrice(),goods.getTotalPurchase(), goods.getNumber(),goods.getType());
         System.out.println(goods1);
         if (goodsServiceImpl.update(goods1)>0)
             return SysResult.success();

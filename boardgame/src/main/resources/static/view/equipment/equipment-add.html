@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>添加商品</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.ico"/>
+    <title>添加设备</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
     <link rel="stylesheet" href="../../layui/css/layui.css">
     <link rel="stylesheet" href="../../css/common.css">
 
 </head>
 <body>
 <div class="yadmin-body animated fadeIn">
-    <form action=""  class="layui-form layui-form-pane">
+    <form action="" class="layui-form layui-form-pane">
         <div class="layui-form-item">
             <label for="name" class="layui-form-label">
-                商品名称
+                设备名称
             </label>
             <div class="layui-input-block">
                 <input type="text" id="name" name="name"
@@ -22,32 +22,22 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label for="sellPrice" class="layui-form-label">
-                售价
+            <label for="price" class="layui-form-label">
+                价格
             </label>
             <div class="layui-input-block">
-                <input type="text" id="sellPrice" name="sellPrice"
+                <input type="text" id="price" name="price"
                        lay-verify="required" lay-vertype="tips"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label for="purPrice" class="layui-form-label">
-                进价
+            <label for="comment" class="layui-form-label">
+                详情
             </label>
             <div class="layui-input-block">
-                <input type="text" id="purPrice" name="purPrice"
-                       lay-verify="required" lay-vertype="tips"
-                       autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label for="number" class="layui-form-label">
-                现存数量
-            </label>
-            <div class="layui-input-block">
-                <input type="text" id="number" name="number"
+                <input type="text" id="comment" name="comment"
                        lay-verify="required" lay-vertype="tips"
                        autocomplete="off" class="layui-input">
             </div>
@@ -62,18 +52,16 @@
                        autocomplete="off" class="layui-input">
             </div>
         </div>
-
         <div class="layui-form-item">
             <div class="layui-input-block" style="margin-left:0;text-align:center;">
-
-                <button class="layui-btn layui-btn-normal"  lay-submit lay-filter="search" >添加</button>
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">添加</button>
             </div>
         </div>
     </form>
 </div>
-
 <script src="../../layui/layui.js"></script>
 <script src="../../js/common.js"></script>
+
 
 <script>
     layui.config({
@@ -90,11 +78,11 @@
             // 点击添加时  function toAjax() {
             var message = "";
             $.ajax({
-                type: "get",
-                url: "/goods/add",
+                type: "POST",
+                url: "/equipment/add/",
                 data: {
-                    name: $("#name").val(), sellPrice: $("#sellPrice").val(), purPrice: $("#purPrice").val()
-                    , number: $("#number").val(), type: $("#type").val()
+                    name: $("#name").val(), price: $("#price").val(), comment: $("#comment").val()
+                    , type: $("#type").val()
                 },
                 dataType: "json",
                 async: false,

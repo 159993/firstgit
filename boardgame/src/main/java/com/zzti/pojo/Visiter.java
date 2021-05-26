@@ -7,7 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.xml.crypto.Data;
+import java.util.Date;
+
 @lombok.Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class Visiter {
     private Integer sex;
     private Integer del;
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
-    private Data createTime;
+    private Date createTime;
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
-    private Data updateTime;
+    private Date updateTime;
 }

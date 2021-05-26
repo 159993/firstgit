@@ -40,6 +40,6 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Integer update(Goods goods) {
-        return goodsMapper.updateById(goods);
+        return goodsMapper.update(goods);
     }
 }

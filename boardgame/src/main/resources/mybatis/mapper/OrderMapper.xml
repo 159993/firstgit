@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzti.mapper.OrderMapper">
+    <!--留着以后用  -->
+    <resultMap id="selectCost" type="java.util.HashMap">
+        <result column="name" property="name" javaType="java.lang.String"/>
+        <result column="sum" property="value" javaType="java.lang.Integer"/>
+    </resultMap>
+    <resultMap id="selectYear" type="java.util.HashMap">
+        <result column="month" property="key" javaType="java.lang.String"/>
+        <result column="count" property="value" javaType="java.lang.Integer"/>
+    </resultMap>
+
+    <select id="selectEquCost" resultMap="selectCost">
+        SELECT '器材' AS NAME,SUM(price) sum
+        FROM  equipment
+    </select>
+    
+    <select id="selectVisiterCost" resultMap="selectCost">
+        SELECT '商品' AS NAME,SUM(pur_price*total_purchase) SUM
+        FROM goods
+    </select>
+    <select id="selectGoodsCost" resultMap="selectCost">
+        SELECT '服务员' AS NAME, SUM(salary) SUM
+        FROM waiter
+    </select>
+    <select id="selectAllIncome" resultMap="selectCost">
+
+        SELECT '总收入' AS NAME, SUM(g.sell_price*(g.total_purchase-g.number))+SUM(ow.total) SUM
+        FROM goods g,order_waiter ow
+
+    </select>
+    <select id="selectThisYear" resultMap="selectYear">
+
+
+        SELECT MONTH(create_time) AS MONTH,COUNT(1) AS COUNT
+        FROM order_goods
+        WHERE YEAR(create_time) = YEAR(NOW())
+        AND goods_id = 10
+        GROUP BY MONTH ORDER BY MONTH;
+
+
+    </select>
+    <select id="selectLastYear" resultMap="selectYear">
+
+        SELECT MONTH(create_time) AS MONTH,COUNT(1) AS COUNT
+        FROM order_goods
+        WHERE YEAR(create_time) = YEAR(NOW())-1
+        AND goods_id = 10
+        GROUP BY MONTH ORDER BY MONTH;
+
+    </select>
+</mapper>

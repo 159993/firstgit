@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th = "http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>添加用户</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.ico"/>
     <link rel="stylesheet" href="../../layui/css/layui.css">
     <link rel="stylesheet" href="../../css/common.css">
     
@@ -13,26 +14,112 @@
     <link rel="stylesheet" href="../../layui/extend/formSelects-v4.css">
 </head>
 <body>
+    <!--<div class="yadmin-body animated fadeIn">-->
+        <!--<form action="" method="post" class="layui-form layui-form-pane" id="user-table">-->
+            <!--<div class="layui-form-item">-->
+                <!--<label for="username" class="layui-form-label">-->
+                    <!--用户名-->
+                <!--</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="text" id="username" name="username" value=""-->
+                           <!--lay-verify="required" lay-vertype="tips"-->
+                           <!--autocomplete="off" class="layui-input">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+                <!--<label for="email" class="layui-form-label">-->
+                    <!--邮箱-->
+                <!--</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="text" id="email" name="email"  value=""-->
+                           <!--lay-verify="required|email" lay-vertype="tips"-->
+                           <!--autocomplete="off" class="layui-input">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; 编辑时不显示密码框 &ndash;&gt;-->
+            <!--<div class="layui-form-item">-->
+                <!--<label for="password" class="layui-form-label">-->
+                    <!--用户密码-->
+                <!--</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="password" id="password" name="password"-->
+                           <!--lay-verify="required" lay-vertype="tips"-->
+                           <!--autocomplete="off" class="layui-input">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item" pane="">-->
+                <!--<label class="layui-form-label">-->
+                    <!--状态-->
+                <!--</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="radio" name="status" value="1" title="正常" checked="checked">-->
+                    <!--<input type="radio" name="status" value="0" title="锁定">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+                <!--<label class="layui-form-label">-->
+                    <!--角色-->
+                <!--</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<select name="role" xm-select="role-select"-->
+                            <!--lay-verify="required"-->
+                            <!--lay-vertype="tips">-->
+                        <!--<option value="">请选择角色</option>-->
+                        <!--<option value="1">管理员</option>-->
+                        <!--<option value="2">普通用户</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+                <!--<label class="layui-form-label">-->
+                    <!--部门-->
+                <!--</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<ul id="deptTree" class="dtree" data-id="0" data-value="请选择部门"></ul>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+                <!--<div class="layui-input-block" style="margin-left:0;text-align:center;">-->
+                    <!--<input type="hidden" id="deptId" name="deptId" value="">-->
+                    <!--<input type="hidden" id="userId" name="userId" value="">-->
+                    <!--<button class="layui-btn layui-btn-normal btn-w100" lay-submit="" lay-filter="add">增加</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</form>-->
+    <!--</div>-->
+
     <div class="yadmin-body animated fadeIn">
-        <form action="" method="post" class="layui-form layui-form-pane" id="user-table">
+        <form action="" id="userInfo"class="layui-form layui-form-pane">
+            <input type="text" id="Id" name="Id" th:value="${visiter.getId()}" hidden = "hidden" >
+
             <div class="layui-form-item">
-                <label for="username" class="layui-form-label">
-                    用户名
+                <label for="name" class="layui-form-label">
+                    用户名称
                 </label>
                 <div class="layui-input-block">
-                    <input type="text" id="username" name="username" value=""
+                    <input type="text" id="name" name="name" th:value="${visiter.getName()}"
                            lay-verify="required" lay-vertype="tips"
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="email" class="layui-form-label">
-                    邮箱
+                <label for="age" class="layui-form-label">
+                    年龄
                 </label>
                 <div class="layui-input-block">
-                    <input type="text" id="email" name="email"  value=""
+                    <input type="text" id="age" name="age"  th:value="${visiter.getAge()}"
                            lay-verify="required|email" lay-vertype="tips"
                            autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="account" class="layui-form-label">
+                    邮箱（登录用）
+                </label>
+                <div class="layui-input-block">
+                    <input type="text" id="account" name="account"  th:value="${visiter.getAccount()}"
+                           lay-verify="required|email" lay-vertype="tips"
+                           autocomplete="off" class="layui-input" readonly>
                 </div>
             </div>
             <!-- 编辑时不显示密码框 -->
@@ -41,56 +128,59 @@
                     用户密码
                 </label>
                 <div class="layui-input-block">
-                    <input type="password" id="password" name="password"
+                    <input type="password" id="password" name="password" th:value="${visiter.getPassword()}"
                            lay-verify="required" lay-vertype="tips"
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
+
+
+
             <div class="layui-form-item" pane="">
                 <label class="layui-form-label">
-                    状态
+                    性别
                 </label>
                 <div class="layui-input-block">
-                    <input type="radio" name="status" value="1" title="正常" checked="checked">
-                    <input type="radio" name="status" value="0" title="锁定">
+                    <input type="radio" name="sex"  th:value="1" title="男" th:checked="${visiter.getSex()==1}">
+                    <input type="radio" name="sex"  th:value="0" title="女" th:checked="${visiter.getSex()==0}">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    角色
-                </label>
-                <div class="layui-input-block">
-                    <select name="role" xm-select="role-select"
-                            lay-verify="required"
-                            lay-vertype="tips">
-                        <option value="">请选择角色</option>
-                        <option value="1">管理员</option>
-                        <option value="2">普通用户</option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    部门
-                </label>
-                <div class="layui-input-block">
-                    <ul id="deptTree" class="dtree" data-id="0" data-value="请选择部门"></ul>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block" style="margin-left:0;text-align:center;">
-                    <input type="hidden" id="deptId" name="deptId" value="">
-                    <input type="hidden" id="userId" name="userId" value="">
-                    <button class="layui-btn layui-btn-normal btn-w100" lay-submit="" lay-filter="add">增加</button>
-                </div>
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">-->
+            <!--角色-->
+            <!--</label>-->
+            <!--<div class="layui-input-block">-->
+            <!--<select name="role" xm-select="role-select"-->
+            <!--lay-verify="required"-->
+            <!--lay-vertype="tips">-->
+            <!--<option value="">请选择角色</option>-->
+            <!--<option value="1">管理员</option>-->
+            <!--<option value="2">普通用户</option>-->
+            <!--</select>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">-->
+            <!--部门-->
+            <!--</label>-->
+            <!--<div class="layui-input-block">-->
+            <!--<ul id="deptTree" class="dtree" data-id="0" data-value="请选择部门"></ul>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+            <div class="layui-input-block" style="margin-left:0;text-align:center;">
+                <!--<input type="hidden" id="deptId" name="deptId" value="">-->
+                <!--<input type="hidden" id="userId" name="userId" value="">-->
+                <button class="layui-btn layui-btn-normal btn-w100"  type="button" onclick="toAjax()">修改</button>
             </div>
         </form>
+
     </div>
 
-    <script src="/layui/layui.js"></script>
-    <script src="/js/common.js"></script>
-
+    <script src="../../layui/layui.js"></script>
+    <script src="../../js/common.js"></script>
     <script>
+
         layui.config({
             base: '/layui/extend/'
         }).extend({
@@ -99,103 +189,150 @@
             $ = layui.jquery;
             var form = layui.form
                 , layer = layui.layer
-                , formSelects = layui.formSelects
-                , dtree = layui.dtree;
-
-            dtree.renderSelect({
-                elem: "#deptTree",
-                url: "/data/dept/tree.json",
-                dataStyle: "layuiStyle",
-                width: "100%",
-                method: "GET",
-                dot: false,
-                accordion: true,
-                menubar: true,
-                response: {
-                    statusCode: 0,
-                    message: "msg",
-                    treeId: "id",
-                    parentId: "parentId",
-                    title: "name"
+        });
+        function toAjax() {
+            var message="";
+            var a = document.getElementsByName("sex");
+            var sexd = 0;
+            for(var   i=0;   i<a.length;   i++)    {
+                if(a[i].checked){
+                    sexd = a[i].value
+                }
+            }
+            $.ajax({
+                type: "post",
+                url: "/visiter/update/",
+                data: {name:$("#name").val(),age:$("#age").val()
+                    ,account:$("#account").val(),sex:sexd,password:$("#password").val()},
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == '-1') {
+                        layer.msg(data.msg, {icon: 5});//失败的表情
+                        return;
+                    } else if (data.status == '200') {
+                        layer.msg(data.msg, {
+                            icon: 6,//成功的表情
+                            time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                            location.reload();
+                        })
+                    };
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
                 }
             });
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+        };
 
-            dtree.on("node('deptTree')" ,function(obj){
-                $("#deptId").val(obj.param.nodeId);
-            });
-
-            form.on('submit(add)', function (form) {
-                form.field.role = formSelects.value('role-select', 'val');
-                layer.msg("添加成功", {icon: 6});
-                return false;
-            });
-        });
     </script>
 
-<script>
-    layui.config({
-        base: '/layui/extend/'
-    }).use(['table', 'element', 'form', 'dtree', 'tablePlug'], function () {
-        var table = layui.table;
-        var $ = layui.$;
-        var form = layui.form;
-        var dtree = layui.dtree;
-        var tablePlug = layui.tablePlug;
+    <!--<script>-->
+        <!--layui.config({-->
+            <!--base: '/layui/extend/'-->
+        <!--}).extend({-->
+            <!--formSelects: 'formSelects-v4'-->
+        <!--}).use(['form', 'layer', 'formSelects', 'dtree'], function () {-->
+            <!--$ = layui.jquery;-->
+            <!--var form = layui.form-->
+                <!--, layer = layui.layer-->
+                <!--, formSelects = layui.formSelects-->
+                <!--, dtree = layui.dtree;-->
 
-        tablePlug.smartReload.enable(true);
+            <!--dtree.renderSelect({-->
+                <!--elem: "#deptTree",-->
+                <!--url: "/data/dept/tree.json",-->
+                <!--dataStyle: "layuiStyle",-->
+                <!--width: "100%",-->
+                <!--method: "GET",-->
+                <!--dot: false,-->
+                <!--accordion: true,-->
+                <!--menubar: true,-->
+                <!--response: {-->
+                    <!--statusCode: 0,-->
+                    <!--message: "msg",-->
+                    <!--treeId: "id",-->
+                    <!--parentId: "parentId",-->
+                    <!--title: "name"-->
+                <!--}-->
+            <!--});-->
 
-        dtree.renderSelect({
-            elem: "#deptTree",
-            url: "/data/dept/tree.json",
-            dataStyle: "layuiStyle",
-            width: "100%",
-            method: "GET",
-            dot: false,
-            menubar: true,
-            response: {
-                statusCode: 0,
-                message: "msg",
-                treeId: "id",
-                parentId: "parentId",
-                title: "name"
-            }
-        });
+            <!--dtree.on("node('deptTree')" ,function(obj){-->
+                <!--$("#deptId").val(obj.param.nodeId);-->
+            <!--});-->
 
-        dtree.on("node('deptTree')" ,function(obj) {
-            var typeDom = layui.$('#deptId');
-            console.log(typeDom.val() , obj.param.nodeId);
-            console.log(typeDom.val() === obj.param.nodeId);
-            if (typeDom.val() === obj.param.nodeId) {
-                typeDom.val('');
-                layui.$("input[dtree-id='deptTree']").val('请选择');
-            } else {
-                typeDom.val(obj.param.nodeId)
-            }
-        });
+            <!--form.on('submit(add)', function (form) {-->
+                <!--form.field.role = formSelects.value('role-select', 'val');-->
+                <!--layer.msg("添加成功", {icon: 6});-->
+                <!--return false;-->
+            <!--});-->
+        <!--});-->
+    <!--</script>-->
 
-        table.render({
-            elem: '#user-table',
-            url: '/data/user/list.json',
-            page: true,
-            toolbar: '#toolbar',
-            smartReloadModel: true,
-            cols: [
-                [
-                    {type:'checkbox'},
-                    {type: 'numbers', title: '序号', width: 60},
-                    {field: 'userId', title: 'ID', hide: true},
-                    {field: 'username', title: '用户名', minWidth: 160},
-                    {field: 'deptName', title: '部门', minWidth: 160},
-                    {field: 'email', title: '邮箱', minWidth: 160},
-                    {field: 'createTime', title: '创建时间', align: 'center', width: 180},
-                    {field: 'lastLoginTime', title: '最后登陆时间',align: 'center', width: 180},
-                    {field: 'status', title: '状态', align: 'center', templet: "#statusTpl", width: 100},
-                    {title: '操作', fixed: 'right', align: 'center', toolbar: '#column-toolbar'}
-                ]
-            ]
-        })
+<!--<script>-->
+    <!--layui.config({-->
+        <!--base: '/layui/extend/'-->
+    <!--}).use(['table', 'element', 'form', 'dtree', 'tablePlug'], function () {-->
+        <!--var table = layui.table;-->
+        <!--var $ = layui.$;-->
+        <!--var form = layui.form;-->
+        <!--var dtree = layui.dtree;-->
+        <!--var tablePlug = layui.tablePlug;-->
+
+        <!--tablePlug.smartReload.enable(true);-->
+
+        <!--dtree.renderSelect({-->
+            <!--elem: "#deptTree",-->
+            <!--url: "/data/dept/tree.json",-->
+            <!--dataStyle: "layuiStyle",-->
+            <!--width: "100%",-->
+            <!--method: "GET",-->
+            <!--dot: false,-->
+            <!--menubar: true,-->
+            <!--response: {-->
+                <!--statusCode: 0,-->
+                <!--message: "msg",-->
+                <!--treeId: "id",-->
+                <!--parentId: "parentId",-->
+                <!--title: "name"-->
+            <!--}-->
+        <!--});-->
+
+        <!--dtree.on("node('deptTree')" ,function(obj) {-->
+            <!--var typeDom = layui.$('#deptId');-->
+            <!--console.log(typeDom.val() , obj.param.nodeId);-->
+            <!--console.log(typeDom.val() === obj.param.nodeId);-->
+            <!--if (typeDom.val() === obj.param.nodeId) {-->
+                <!--typeDom.val('');-->
+                <!--layui.$("input[dtree-id='deptTree']").val('请选择');-->
+            <!--} else {-->
+                <!--typeDom.val(obj.param.nodeId)-->
+            <!--}-->
+        <!--});-->
+
+        <!--table.render({-->
+            <!--elem: '#user-table',-->
+            <!--url: '/data/user/list.json',-->
+            <!--page: true,-->
+            <!--toolbar: '#toolbar',-->
+            <!--smartReloadModel: true,-->
+            <!--cols: [-->
+                <!--[-->
+                    <!--{type:'checkbox'},-->
+                    <!--{type: 'numbers', title: '序号', width: 60},-->
+                    <!--{field: 'userId', title: 'ID', hide: true},-->
+                    <!--{field: 'username', title: '用户名', minWidth: 160},-->
+                    <!--{field: 'deptName', title: '部门', minWidth: 160},-->
+                    <!--{field: 'email', title: '邮箱', minWidth: 160},-->
+                    <!--{field: 'createTime', title: '创建时间', align: 'center', width: 180},-->
+                    <!--{field: 'lastLoginTime', title: '最后登陆时间',align: 'center', width: 180},-->
+                    <!--{field: 'status', title: '状态', align: 'center', templet: "#statusTpl", width: 100},-->
+                    <!--{title: '操作', fixed: 'right', align: 'center', toolbar: '#column-toolbar'}-->
+                <!--]-->
+            <!--]-->
+        <!--})-->
 
 
-</script>
+<!--</script>-->
 </body>
 </html>

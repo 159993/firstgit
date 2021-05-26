@@ -10,4 +10,6 @@ import java.util.Map;
 @Repository
 public interface VisiterMapper extends BaseMapper<Visiter> {
     List<Visiter> selectList(Map map);
+    @Override
+    int updateById(Visiter entity);
 }

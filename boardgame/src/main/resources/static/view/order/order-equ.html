@@ -96,10 +96,6 @@ I
         var form = layui.form;
         var dtree = layui.dtree;
         var tablePlug = layui.tablePlug;
-
-
-
-
         // tablePlug.smartReload.enable(true);
 
         // dtree.renderSelect({
@@ -160,15 +156,6 @@ I
                         $(this).text("设备正常")
                     }
                 })
-                // var obj = res.data[state];
-                // console.log(obj);
-                // //todo 加上时间转化
-                // table.on('tool(state)',function (obj) {
-                //
-                // })
-                // if(obj.event=="updataDamage"){
-                //     console.log(data.state);
-                // }
             },
 
             limit:5,
@@ -207,44 +194,33 @@ I
             active[type] ? active[type].call(this) : '';
         });
 
-        //
-        // form.on('summit(search)', function (form) {
-        //     table.reload('orderEqu-table', {
-        //         where: form.visitName
-        //     });
-        //     return false;
-        // });
-
-
-
 
 //todo ajax 请求完成订单啥的
-        // 账号状态(完成/未完成)点击事件
-        // form.on('switch(state)', function(data){
-        //     var state = $('#orderEqu-table[name="state"]');
-        //     console.log("aaa"+data.state);
-        //     var chek= data.state;
-        //     var di = data.field;
-        //     if (data.elem.checked) {
-        //         // data.elem.state = 1;
-        //         $.ajax({
-        //             url:"/ordEqu/upDamage/di+","+chek,
-        //             dataType:"json",
-        //             success: function(data,status){
-        //                 if (status == 200){
-        //                     table.reload();
-        //                     parent.layer.msg("已完成", {icon: 6});
-        //                     }else{parent.layer.msg("错误", {icon: 6});}
-        //              }
-        //
-        //         });
-        //
-        //     } else {
-        //         parent.layer.msg("未完成", {icon: 6});
-        //     }
-        // });
+//         // 账号状态(完成/未完成)点击事件
+//         form.on('switch(state)', function(data){
+//             var state = $('#orderEqu-table[name="state"]');
+//             console.log("aaa"+data.state);
+//             var chek= data.state;
+//             var di = data.field;
+//             if (data.elem.checked) {
+//                 // data.elem.state = 1;
+//                 $.ajax({
+//                     url:"/ordEqu/upDamage/di"+","+1,
+//                     dataType:"json",
+//                     success:function(data,status){
+//                         if (status == 200){
+//                             table.reload();
+//                             parent.layer.msg("已完成", {icon: 6});
+//                             }else{parent.layer.msg("错误", {icon: 6});}
+//                      }
+//
+//                 })
+//
+//             } else {
+//                 parent.layer.msg("未完成", {icon: 6});
+//             }
+//         });
 
-        //
         // // 工具条点击事件
         // table.on('toolbar', function (obj) {
         //     var data = obj.data;
@@ -274,15 +250,18 @@ I
                     type: "POST",
                     // data:{"id":data.id},//传给后台的值
                     dataType: "json",
+                    async: false,
                     success: function(data){
-                        if(data['status']==200){   //从前台取回的状态值
+                        if(data.status==200){   //从前台取回的状态值
                             layer.close(index);
+                            table.reload('orderEqu-table');
                             //同步更新表格和缓存对应的值
                             obj.del();
                             layer.msg("删除成功", {icon: 6});
                         }else{
                             layer.msg("删除失败", {icon: 5});
                         }
+                        table.reload('orderEqu-table');
                     }
                 });
             }else if(event==='updataDamage'){
@@ -290,7 +269,7 @@ I
             }
         });
 
-        table.on('row(orderEqu-table)',function(obj){
+        table.on('row(orderEqu-table).status',function(obj){
             var data = obj.data;
             var event = obj.event;
             // console.log(this.checked?'1':'0');
@@ -307,17 +286,20 @@ I
                 $.ajax({
                     url: "/ordEqu/upDamage/"+data.id+","+data.state,
                     dataType: "json",
+                    async: false,
                     success: function (res) {
                         console.log(res);
                         if (res['status'] == 200) {
-                            table.reload();
+                            table.reload('orderEqu-table');
                             parent.layer.msg("已完成", {icon: 6});
                         } else {
                             parent.layer.msg("错误", {icon: 6});
+                            table.reload('orderEqu-table');
                         }
                     }
                 })
-            }else {parent.layer.msg("未完成", {icon: 6});}
+            }
+            table.reload('orderEqu-table');
 
         });
 

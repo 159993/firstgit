@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>添加角色</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.ico"/>
     <link rel="stylesheet" href="../../layui/css/layui.css">
     <link rel="stylesheet" href="../../css/common.css">
     
 </head>
 <body>
     <div class="yadmin-body animated fadeIn">
-        <form action="/waiter/insert" method="post" class="layui-form layui-form-pane">
+        <form action="" method="post" class="layui-form layui-form-pane">
             <div class="layui-form-item">
                 <label for="name" class="layui-form-label">
                     角色名称
@@ -21,9 +21,10 @@
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
+
             <div class="layui-form-item">
                 <label for="age" class="layui-form-label">
-                    角色描述
+                    年龄
                 </label>
                 <div class="layui-input-block">
                     <input type="text" id="age" name="age"
@@ -32,14 +33,13 @@
                 </div>
             </div>
 
-            <div class="layui-form-item">
-                <label for="sex" class="layui-form-label">
+            <div class="layui-form-item" pane="">
+                <label class="layui-form-label">
                     性别
                 </label>
                 <div class="layui-input-block">
-                    <input type="text" id="sex" name="sex"
-                           lay-verify="required" lay-vertype="tips"
-                           autocomplete="off" class="layui-input">
+                    <input type="radio" name="sex" value="1" title="男" checked="checked">
+                    <input type="radio" name="sex" value="0" title="女">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -73,11 +73,21 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label for="account" class="layui-form-label">
+                    账号
+                </label>
+                <div class="layui-input-block">
+                    <input type="text" id="account" name="account"
+                           lay-verify="required" lay-vertype="tips"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label for="password" class="layui-form-label">
                     密码
                 </label>
                 <div class="layui-input-block">
-                    <input type="text" id="password" name="password"
+                    <input type="password" id="password" name="password"
                            lay-verify="required" lay-vertype="tips"
                            autocomplete="off" class="layui-input">
                 </div>
@@ -85,7 +95,7 @@
             <div class="layui-form-item">
                 <div class="layui-input-block" style="margin-left:0;text-align:center;">
 
-                    <button class="layui-btn layui-btn-normal" type="submit" >添加</button>
+                    <button class="layui-btn layui-btn-normal"  lay-submit lay-filter="search" >添加</button>
                 </div>
             </div>
         </form>
@@ -93,21 +103,60 @@
 
     <script src="../../layui/layui.js"></script>
     <script src="../../js/common.js"></script>
-z
-<!--    <script>
-        layui.use(['form', 'layer'], function () {
-            $ = layui.jquery;
-            var form = layui.form
-                , layer = layui.layer;
 
-            // 监听提交
-            form.on('submit(add)', function (form) {
 
-                layer.msg("添加成功", {icon: 6});
-                return false;
+<script>
+    layui.config({
+        base: '/layui/extend/'
+    }).extend({
+        formSelects: 'formSelects-v4'
+    }).use(['form', 'layer', 'formSelects', 'dtree'], function () {
+        $ = layui.jquery;
+        var form = layui.form
+            , layer = layui.layer
+            , formSelects = layui.formSelects
+            , dtree = layui.dtree;
+
+        form.on('submit(search)', function (form) {
+            // form.field.role = formSelects.value('role-select', 'val');
+
+
+            var a = document.getElementsByName("sex");
+            var sexd = 0;
+            for(var   i=0;   i<a.length;   i++)    {
+                if(a[i].checked){
+                    sexd = a[i].value
+                }
+            }
+            console.log("aadads"+form);
+            $.ajax({
+                url: "/waiter/insert/",
+                type: 'post',
+                data: {name:$("#name").val(),age:$("#age").val(),sex:sexd
+                        ,address:$("#address").val(),phone:$("#phone").val(),salary:$("#salary").val()
+                        ,account:$("#account").val(),password:$("#password").val()},
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.status == '-1') {
+                        layer.msg(data.msg, {icon: 5});//失败的表情
+                        return;
+                    } else if (data.status == '200') {
+                        layer.msg(data.msg, {
+                            icon: 6,//成功的表情
+                            time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                            location.reload();
+                        })
+                    };
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                }
             });
-
+            return false;
         });
-    </script>-->
+    });
+    </script>
+
 </body>
 </html>

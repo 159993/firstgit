@@ -19,4 +19,30 @@
 
     </select>
 
+    <update id="update" parameterType="java.lang.Integer">
+        update goods
+        <set >
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sellPrice != null">
+                sell_price = #{sellPrice},
+            </if>
+            <if test="purPrice != null">
+                pur_price = #{purPrice},
+            </if>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="totalPurchase != null">
+                total_purchase = total_purchase + #{totalPurchase},
+                number = number + #{totalPurchase},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+        </set>
+        where id = #{id}
+
+    </update>
 </mapper>

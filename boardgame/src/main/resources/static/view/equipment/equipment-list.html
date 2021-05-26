@@ -20,10 +20,10 @@
     <form class="layui-form yadmin-search-area input">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label for="goodsName" class="layui-form-label">名称</label>
+                <label for="equipmentName" class="layui-form-label">名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="goodsName" autocomplete="off"
-                           id="goodsName" class="layui-input">
+                    <input type="text" name="equipmentName" autocomplete="off"
+                           id="equipmentName" class="layui-input">
                 </div>
 
                 <button type="button" lay-submit="" lay-filter="search"
@@ -34,7 +34,7 @@
         </div>
     </form>
 
-    <table class="layui-hide" id="goods-table"></table>
+    <table class="layui-hide" id="equipment-table"></table>
 </div>
 
 <script type="text/html" id="toolbar">
@@ -85,15 +85,15 @@
         tablePlug.smartReload.enable(true);
 
         form.on('submit(search)', function (form) {
-            table.reload('goods-table', {
+            table.reload('equipment-table', {
                 where: form.field
             });
             return false;
         });
 
         table.render({
-            elem: '#goods-table',
-            url: '/goods/findAll',
+            elem: '#equipment-table',
+            url: '/equipment/selectList',
             cellMinWidth: 80,
             page: true,
             toolbar: '#toolbar',
@@ -109,39 +109,44 @@
                     {type: 'numbers', title: '序号', width: 60},
                     {field: 'id', title: 'ID', hide: true},
                     {field: 'name', title: '名称', minWidth: 120},
-                    {field: 'sellPrice', title: '售价', minWidth: 120},
-                    {field: 'purPrice', title: '进价', minWidth: 120},
-                    {field: 'number', title: '现存数量', minWidth: 120},
+                    {field: 'price', title: '价格', minWidth: 120},
+                    {field: 'damage', title: '状态', minWidth: 120},
+                    {field: 'comment', title: '详情', minWidth: 120},
                     {field: 'type', title: '类别', minWidth: 120},
+                    {field: 'used', title: '是否有人', minWidth: 120},
                     {title: '操作', fixed: 'right', width: 200, align: 'center', toolbar: '#column-toolbar'}
                 ]
-            ],id:"goods-table",
-            // done: function (res,curr,count) {
-            //     $("[data-field='sex']").children().each(function(){
-            //         if($(this).text()=='0'){
-            //             $(this).text("男")
-            //         }else if($(this).text()=='1'){
-            //             $(this).text("女")
-            //         }else if($(this).text()=='-1')
-            //         {
-            //             $(this).text("保密")
-            //         }
-            //     })
-            // }
+            ],id:"equipment-table",
+            done: function (res,curr,count) {
+                $("[data-field='damage']").children().each(function(){
+                    if($(this).text()=='0'){
+                        $(this).text("损坏")
+                    }else if($(this).text()=='1'){
+                        $(this).text("正常")
+                    }
+                }),
+                    $("[data-field='used']").children().each(function(){
+                        if($(this).text()=='0'){
+                            $(this).text("空闲")
+                        }else if($(this).text()=='1'){
+                            $(this).text("有人")
+                        }
+                    })
+            }
         });
 
         //监听用户名搜索事件
 
         var active = {
             reload: function(){
-                var goodsName = $('#goodsName');	//得到搜索框里已输入的数据
+                var equipmentName = $('#equipmentName');	//得到搜索框里已输入的数据
                 //执行重载
-                table.reload('goods-table', {
+                table.reload('equipment-table', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     ,where: {
-                        goodsName:  goodsName.val(),
+                        equipmentName:  equipmentName.val(),
                     }
                 });
             }
@@ -162,40 +167,37 @@
         table.on('tool', function (obj) {
             var data = obj.data;
             var event = obj.event;
-
             if (event === 'edit') {
                 edit(data.id);
-
             } else if (event === 'del') {
                 layer.confirm("确定删除角色吗?", {icon: 3, title: '提示'},
                     function (index) {// 确定回调
-                        deluser(data);
-                        obj.del();
+                        deluser(data)
                         layer.close(index);
+                        obj.del();
                     }, function (index) {//取消回调
                         layer.close(index);
-                        table.reload('goods-table');
                     }
                 );
             }
         });
         function deluser(data){
             $.ajax({
-                url: "/goods/delete/"+data.id,    //这个是后台的路由地址
+                url: "/equipment/delete/"+data.id,    //这个是后台的路由地址
                 type: "POST",
                 // data:{"id":data.id},//传给后台的值
                 dataType: "json",
+                async: false,
                 success: function(data){
                     if(data['status']==200){   //从前台取回的状态值
                         layer.close(index);
                         //同步更新表格和缓存对应的值
                         obj.del();
                         layer.msg("删除成功", {icon: 6});
-                        table.reload('goods-table');
-
+                        table.reload('equipment-table');
                     }else{
                         layer.msg("删除失败", {icon: 5});
-                        table.reload('goods-table');
+                        table.reload('equipment-table');
 
                     }
                 }
@@ -204,44 +206,42 @@
         }
         function add() {
             layer.open({
-                content: "/view/goods/goods-add.html",
-                title: "新增角色",
+                content: "/view/equipment/equipment-add.html",
+                title: "新增商品",
                 area: ['40%', '85%'],
                 type: 2,
                 maxmin: true,
                 shadeClose: true,
                 end: function () {
-                    table.reload('goods-table');
+                    table.reload('equipment-table');
                 }
             });
         }
 
         function edit(id) {
             layer.open({
-                content: '/goods/findById/'+id,
-                title: "编辑商品",
+                content: '/equipment/findById/'+id,
+                title: "编辑角色",
                 area: ['40%', '85%'],
                 type: 2,
                 maxmin: true,
                 shadeClose: true,
-
+                async: false,
                 end: function (data) {
-                    if (data.success()){
-                        layer.closeAll()
-                    }
                     if(data['status']==200){   //从前台取回的状态值
                         // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         // parent.layer.close(index); //再执行关闭
                         //同步更新表格和缓存对应的值
                         // var index = parent.layer.getFrameIndex(window.name);
                         // setTimeout(function(){parent.layer.close(index)}, 1000);
+
                         layer.msg("修改成功", {icon: 6});
-                        table.reload('goods-table');
+                        table.reload('equipment-table');
                     }
                     // var index = parent.layer.getFrameIndex(window.name);
                     // setTimeout(function(){parent.layer.close(index)}, 1000);
 
-                    table.reload('goods-table');
+                    table.reload('equipment-table');
                 }
                 // var index = parent.layer.getFrameIndex(window.name);
                 // setTimeout(function(){parent.layer.close(index)}, 1000);

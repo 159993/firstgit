@@ -8,14 +8,57 @@
     <select id="selectList" parameterType="java.util.HashMap"
             resultType="com.zzti.pojo.Visiter">
 
-        SELECT * FROM vister
+        SELECT * FROM visiter
         <where>
-            <if test="visitName != null">
-                name LIKE concat('%',#{visitName},'%')
+            <if test="visiterName != null">
+                name LIKE concat('%',#{visiterName},'%')
             </if>
         </where>
-
-
+        <if test="account != null">
+            and account LIKE concat('%',#{account},'%')
+        </if>
+        <if test="limit != null and page !=null">
+            LIMIT #{page},#{limit}
+        </if>
     </select>
+    <update id="updateById" parameterType="java.lang.Integer">
+
+    UPDATE `visiter`
+    <set>
+        <if test="name !=null">
+            name = ${name}
+        </if>
+        <if test="account !=null">
+            account = ${account}
+        </if>
+        <if test="password !=null">
+            password = ${password}
+        </if>
+        <if test="age !=null">
+            age = ${age}
+        </if>
+        <if test="sex !=null">
+            sex = ${sex}
+        </if>
+        <if test="comment !=null">
+            comment = ${comment}
+        </if>
+        <if test="photo !=null">
+            photo = ${photo}
+        </if>
+        <if test="name !=null">
+            create_time = create_time
+        </if>
+        <if test="update_time !=null">
+            update_time = now()
+        </if>
+        <if test="del !=null">
+            del = ${del}
+        </if>
+
+    </set>
+    where id = ${id}
+
+    </update>
 
 </mapper>

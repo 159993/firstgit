@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.ico"/>
     <link rel="stylesheet" href="../../layui/css/layui.css">
     <link rel="stylesheet" href="../../css/common.css">
     
@@ -249,6 +249,7 @@
                 } else if (event === 'del') {
                     layer.confirm("确定删除角色吗?", {icon: 3, title: '提示'},
                         function (index) {// 确定回调
+                            obj.del();
                             deluser(data)
                             layer.close(index);
                         }, function (index) {//取消回调
@@ -267,10 +268,11 @@
                         if(data['status']==200){   //从前台取回的状态值
                             layer.close(index);
                             //同步更新表格和缓存对应的值
-                            obj.del();
+                            table.reload('role-table');
                             layer.msg("删除成功", {icon: 6});
                         }else{
                             layer.msg("删除失败", {icon: 5});
+                            table.reload('role-table');
                         }
                     }
                 });
@@ -296,7 +298,6 @@
                     title: "编辑角色",
                     area: ['40%', '85%'],
                     type: 2,
-                    maxmin: true,
                     shadeClose: true,
                     end: function () {
                         table.reload('role-table');
@@ -305,15 +306,6 @@
             }
         });
     </script>
-    <!--<script type="text/html" id="table-gender">-->
-        <!--{{# if(d.gender=== '0') { }}  // 可以用 === 来表示等于-->
-        <!--女-->
-        <!--{{# } else if(d.gender== 1) { }} // 也可以用 == 来表示等于，效果相差不大-->
-        <!--男-->
-        <!--{{# } else { }}-->
-        <!--保密-->
-        <!--{{# } }}-->
-    <!--</script>-->
 
 </body>
 </html>
