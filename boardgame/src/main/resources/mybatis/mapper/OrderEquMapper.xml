@@ -45,7 +45,7 @@
     </select>
     <update id="updateState">
 
-    UPDATE order_equ SET state = 1 ,end_time = NOW()
+    UPDATE order_equ SET state = 1 ,create_time = create_time,end_time = NOW()
     WHERE `id` = #{id};
 
     </update>
@@ -59,5 +59,6 @@
         ORDER BY COUNT(oe.equ_id) DESC
         LIMIT 0,5
     </select>
+
 
 </mapper>
