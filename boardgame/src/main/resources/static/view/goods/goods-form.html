@@ -9,7 +9,7 @@
 <script src="../../js/jquery.js"></script>
 <body>
 
-<form action="" method="post" class="layui-form layui-form-pane">
+<form action="" method="post" class="layui-form">
 
             <input type="text" id="Id" name="Id" th:value="${good.getId()}" hidden = "hidden" >
 
@@ -70,9 +70,16 @@
             类别
         </label>
         <div class="layui-input-block">
-            <input type="text" id="type" name="type"
-                   lay-verify="required" lay-vertype="tips"
-                   autocomplete="off" class="layui-input" th:value="${good.getType()}">
+            <select name="typed" lay-filter="typed" id="type">
+                <option value="0">类别一</option>
+                <option value="1">类别二</option>
+                <option value="2">类别三</option>
+                <option value="3">类别四</option>
+            </select>
+
+            <!--<input type="text" name="type"-->
+                   <!--lay-verify="required" lay-vertype="tips"-->
+                   <!--autocomplete="off" class="layui-input" th:value="${good.getType()}">-->
         </div>
     </div>
 
@@ -86,6 +93,7 @@
 <script src="../../layui/layui.js"></script>
 <script src="../../js/common.js"></script>
 <script>
+    var type = 0;
     layui.config({
         base: '/layui/extend/'
     }).extend({
@@ -94,15 +102,19 @@
         $ = layui.jquery;
         var form = layui.form
             , layer = layui.layer
-
+        form.on('select(typed)', function(data){
+            type = data.value;
+            console.log(data.value())
+        })
     });
+
     function toAjax() {
         $.ajax({
             type: "post",
             url: "/goods/update/",
             data: {id:$("#Id").val(),name:$("#name").val(),sellPrice:$("#sellPrice").val()
                 ,purPrice:$("#purPrice").val(),number:$("#number").val(),totalPurchase:$("#totalPurchase").val()
-                ,type:$("#type").val()},
+                ,type:type},
             dataType: "json",
             success: function (data) {
                 if (data.status == '-1') {
@@ -111,7 +123,7 @@
                 } else if (data.status == '200') {
                     layer.msg(data.msg, {
                         icon: 6,//成功的表情
-                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                        time: 1000,//1秒关闭（如果不配置，默认是3秒）
                     }, function () {
                         location.reload();
                     })

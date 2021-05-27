@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" xmlns:th = "http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -84,8 +84,11 @@
             <li class="layui-nav-item user-selection">
                 <a>
                     <img src="images/avatar.png" class="layui-nav-img" alt="头像">
-                    <cite>管理员</cite>
-                    <span class="layui-nav-more"></span>
+
+                    <cite th:each="cookie :${#httpServletRequest.getCookies()}"
+                          th:if="${cookie.getName().equals('userName')}"
+                          th:text="${cookie.getValue()}"></cite>
+                    <span class="layui-nav-more" th:text="${session.loginUser}"></span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd lay-unselect>

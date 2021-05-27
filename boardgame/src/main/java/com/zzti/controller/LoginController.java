@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.util.StringUtils;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
@@ -27,10 +30,17 @@ public class LoginController {
     @RequestMapping("/login")
     public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
-                        Model model, HttpSession session){
+                        Model model, HttpServletResponse response,
+                        HttpServletRequest request,
+                        HttpSession session){
 
         Waiter waiter = waiterServiceImpl.queryByAcc(username, password);
         if (waiter!=null){
+            session.setAttribute("user",waiter.getName());
+            Cookie cookie=new Cookie("account",waiter.getAccount());
+            model.addAttribute("user", waiter);
+            cookie.setPath(request.getContextPath());
+            response.addCookie(cookie);
             session.setAttribute("loginUser", username);
             return "redirect:/index.html";
         } else {
@@ -40,12 +50,20 @@ public class LoginController {
     }
     @RequestMapping("/loginManager")
     public String loginManager(@RequestParam("username") String username,
-                        @RequestParam("password") String password,
-                        Model model, HttpSession session){
+                               @RequestParam("password") String password,
+                               Model model, HttpServletResponse response,
+                               HttpServletRequest request,
+                               HttpSession session){
 
         Waiter waiter = waiterServiceImpl.queryManager(username, password);
         if (waiter!=null){
-            session.setAttribute("loginUser", username);
+            request.getSession().setAttribute("user",waiter.getAccount());
+            Cookie cookie=new Cookie("account",waiter.getAccount());
+            model.addAttribute("user", waiter);
+            cookie.setPath(request.getContextPath());
+            request.getSession().setAttribute("loginUser", username);
+
+            response.addCookie(cookie);
             return "redirect:/indexMana.html";
         } else {
             model.addAttribute("msg", "用户名或者密码错误");

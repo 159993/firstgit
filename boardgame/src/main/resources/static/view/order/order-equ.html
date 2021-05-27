@@ -62,10 +62,10 @@
 
 <script type="text/html" id="column-toolbar">
 
-    <!--<button type="button" class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">-->
-        <!--<i class="layui-icon layui-icon-edit" title="完成"></i>-->
-        <!--完成-->
-    <!--</button>-->
+    <button type="button" class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">
+        <i class="layui-icon layui-icon-edit" title="完成"></i>
+        完成
+    </button>
 
     <button type="button" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">
         <i class="layui-icon layui-icon-delete" title="删除"></i>
@@ -75,12 +75,12 @@
 
 </script>
 
-<script type="text/html" id="statusTpl">
-    <input id="state" type="checkbox" name="state" value="{{d.state}}"
-           lay-skin="switch" lay-text="完成|未完成"
-           lay-filter="state" {{ d.state == '1' ? 'checked' : '' }} >
-</script>
-I
+<!--<script type="text/html" id="statusTpl">-->
+    <!--<input id="state" type="checkbox" name="state" value="{{d.state}}"-->
+           <!--lay-skin="switch" lay-text="完成|未完成"-->
+           <!--lay-filter="state" {{ d.state == '1' ? 'checked' : '' }} >-->
+<!--</script>-->
+
 <script src="../../js/jquery.js"></script>
 <script src="../../layui/layui.js"></script>
 <script src="../../js/common.js"></script>
@@ -142,7 +142,7 @@ I
                     {field: 'equName', title: '设备名称', minWidth: 160},
                     {field: 'createTime', title: '创建时间', align: 'center', width: 180},
                     {field: 'endTime', title: '结束时间',align: 'center', width: 180},
-                    {field: 'state', title: '状态', align: 'center', templet: "#statusTpl", width: 100},
+                    {field: 'state', title: '状态', align: 'center',  width: 100},
                     {field: 'damage', title: '设备状态', align: 'center', width: 100},
                     {title: '操作', fixed: 'right', align: 'center', toolbar: '#column-toolbar'}
                 ]
@@ -154,6 +154,13 @@ I
                         $(this).text("设备损坏")
                     }else if($(this).text()=='1'){
                         $(this).text("设备正常")
+                    }
+                })
+                $("[data-field='state']").children().each(function(){
+                    if($(this).text()=='0'){
+                        $(this).text("未完成")
+                    }else if($(this).text()=='1'){
+                        $(this).text("完成")
                     }
                 })
             },
@@ -269,59 +276,70 @@ I
             }
         });
 
-        table.on('row(orderEqu-table).status',function(obj){
-            var data = obj.data;
-            var event = obj.event;
-            // console.log(this.checked?'1':'0');
-            // console.log(data.state);
-            this.checked=this.checked?false:true;
-            data.state = this.checked;
-            // console.log(this.checked?'1':'0');
-            // console.log(data.state);
-            console.log(data.id);
-            if(data.state == true)
-                data.state = 0;
-            else data.state = 1;
-            if ( data.state == 1) {
-                $.ajax({
-                    url: "/ordEqu/upDamage/"+data.id+","+data.state,
-                    dataType: "json",
-                    async: false,
-                    success: function (res) {
-                        console.log(res);
-                        if (res['status'] == 200) {
-                            table.reload('orderEqu-table');
-                            parent.layer.msg("已完成", {icon: 6});
-                        } else {
-                            parent.layer.msg("错误", {icon: 6});
-                            table.reload('orderEqu-table');
-                        }
+        // table.on('row(orderEqu-table).status',function(obj){
+        //     var data = obj.data;
+        //     var event = obj.event;
+        //     // console.log(this.checked?'1':'0');
+        //     // console.log(data.state);
+        //     this.checked=this.checked?false:true;
+        //     data.state = this.checked;
+        //     // console.log(this.checked?'1':'0');
+        //     // console.log(data.state);
+        //     console.log(data.id);
+        //     if(data.state == true)
+        //         data.state = 0;
+        //     else data.state = 1;
+        //     if ( data.state == 1) {
+        //         $.ajax({
+        //             url: "/ordEqu/upDamage/"+data.id+","+data.state,
+        //             dataType: "json",
+        //             async: false,
+        //             success: function (res) {
+        //                 console.log(res);
+        //                 if (res['status'] == 200) {
+        //                     table.reload('orderEqu-table');
+        //                     parent.layer.msg("已完成", {icon: 6});
+        //                 } else {
+        //                     parent.layer.msg("错误", {icon: 6});
+        //                     table.reload('orderEqu-table');
+        //                 }
+        //             }
+        //         })
+        //     }
+        //     table.reload('orderEqu-table');
+        //
+        // });
+
+        function edit(data) {
+            $.ajax({
+                url: "/ordEqu/upDamage/"+data.id+","+1,
+                dataType: "json",
+                async: false,
+                success: function (res) {
+                    console.log(res);
+                    if (res['status'] == 200) {
+                        table.reload('orderEqu-table');
+                        parent.layer.msg("已完成", {icon: 6});
+                    } else {
+                        parent.layer.msg("错误", {icon: 6});
+                        table.reload('orderEqu-table');
                     }
-                })
-            }
-            table.reload('orderEqu-table');
+                }
+            })
 
-        });
+            // layer.open({
+            //     content: '/ordEqu/upDamage/' + "id="+ data.id+'&state='+sta,
+            //     title: "完成",
+            //     area: ['40%', '85%'],
+            //     type: 2,
+            //     maxmin: true,
+            //     shadeClose: true,
+            //     end: function () {
+            //         table.reload('orderEqu-table');
+            //     }
+            // });
+        };
 
-        // function edit(data) {
-        //   var sta ;
-        //   if (this.checked){
-        //       sta = 1;
-        //   } else sta = 0;
-        //
-        //     layer.open({
-        //         content: '/ordEqu/upDamage/' + "id="+ data.id+'&state='+sta,
-        //         title: "完成",
-        //         area: ['40%', '85%'],
-        //         type: 2,
-        //         maxmin: true,
-        //         shadeClose: true,
-        //         end: function () {
-        //             table.reload('orderEqu-table');
-        //         }
-        //     });
-        // };
-        //
     });
 </script>
 </body>
